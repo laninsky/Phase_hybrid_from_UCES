@@ -4,6 +4,7 @@ rm hybrid*;
 mv $i temp;
 Rscript extract_hybrid.R;
 sed -i 's/\?/N/g' hybrid_ref.fa;
+sed -i 's/-//g' hybrid_ref.fa;
 /home/a499a400/bin/bwa-0.7.12/bwa index -a is hybrid_ref.fa;
 /home/a499a400/bin/samtools-1.2/samtools faidx hybrid_ref.fa;
 java -jar /home/a499a400/bin/picard/dist/picard.jar CreateSequenceDictionary R=hybrid_ref.fa O=hybrid_ref.dict;
