@@ -20,3 +20,4 @@ Things you'll need to change in the shell script to run this yourself:
 
 
 ###onelining.R###
+You shouldn't have to change anything on this guy - he should be good to go. This is just taking out the line breaks from the fasta sequence to put it all on one line.
