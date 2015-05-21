@@ -7,10 +7,10 @@ It is assumed you have already run your data through the established UCE pipelin
 The shell script is using bwa, gatk, samtools and R to pull out the hybrid sample (R), do a reference-guided assembly (bwa, samtools) using cleaned-data you trimmed during the uce pipeline step, and then calling variants/phasing these (gatk), before using the "new reference" to do the process again to get the other allele for your hybrid.
 
 Things you'll need to change in the shell script to run this yourself:
--- the pathways to the programs
--- the pathways to your reads
--- any mention of 'pixme' (my hybrid species!) needs to be replaced with your own hybrid species name.
--- you'll also need to change some of this stuff inside the R code that this shell calls (extract_hybrid.R and onelining.R)
+\-- the pathways to the programs
+\-- the pathways to your reads
+\-- any mention of 'pixme' (my hybrid species!) needs to be replaced with your own hybrid species name.
+\-- you'll also need to change some of this stuff inside the R code that this shell calls (extract_hybrid.R and onelining.R)
 
 ###extract_hybrid.R####
 
