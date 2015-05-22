@@ -15,6 +15,68 @@ python /public/uce/phyluce/bin/genetrees/phyluce_genetrees_run_raxml_genetrees.p
 3) We then need to navigate to the folder with all our genetrees in it (in my case 'phase_genetrees'). We want to create a file similar to 'all-best-trees.tre', except with UCE names tied to each tree:
 ```
 touch ubertree.tre
-for i in `ls --color=never -d */`; do dirn=`echo $i | sed 's/\///'`; printname=`cat $dirn/RAxML_bestTree.best`; echo $dirn $printtree >> ubertree.tre; done;
+for i in `ls --color=never`; do if [ -d $i ]; then printname=`cat $i/RAxML_bestTree.best`; echo $i $printname >> ubertree.tre; fi; done 
 ```
+
+4) Now we are going to use some R code to pull out the clades with just our hybrid in it. This assumes you've already installed the library package stringr, data.table and plyr e.g. install.packages("stringr")
+```
+library(stringr)
+library(data.table)
+library(plyr)
+intable <- as.matrix(read.table("ubertree.tre"))
+lenintable <- dim(intable)[1]
+temptable <- matrix(NA, nrow=lenintable,ncol=3)
+
+for (j in 1:lenintable) {
+temptable[j,1] <- unlist(strsplit(intable[j,1],"_"))[2]
+temptable[j,2] <- unlist(strsplit(intable[j,1],"_"))[1]
+temptable[j,3] <- "NSSS"
+temp <- unlist(strsplit((gsub(":[0-9]+\\.[0-9]+","",intable[j,2],fixed=FALSE)),"\\("))
+lentemp <- length(temp)
+for (i in 1:lentemp) {
+if ((length(grep("k_pixme",temp[i])))>0) {
+if ((length(grep("k_[a-z]{3}_[a-z],k_pixme\\))",temp[i])))>0) {
+temptable[j,3] <- unlist(strsplit(temp[i],","))[1]
+}
+if ((length(grep("k_pixme,k_[a-z]{3}_[a-z]\\))",temp[i])))>0) {
+temptable[j,3] <- unlist(strsplit((gsub("k_pixme,","",temp[i],fixed=TRUE)),"\\)"))[1]
+}
+}
+}
+}
+
+rm(intable)
+rm(temp)
+rm(lentemp)
+rm(i)
+rm(j)
+
+temptable <- temptable[order(temptable[,1]),]
+sumtable <- matrix(NA,ncol=3,nrow=(lenintable/2))
+
+sumtable[1,1] <- temptable[1,1]
+sumtable[1,2] <- temptable[1,3]
+sumtable[1,3] <- temptable[2,3]
+
+i <- 3
+while (i < lenintable) {
+j <- (i+1)/2
+sumtable[j,1] <- temptable[i,1]
+sumtable[j,2] <- temptable[i,3]
+sumtable[j,3] <- temptable[i+1,3]
+i <- i+2
+}
+
+sumtable2 <- as.data.table(sumtable)[,c("V2","V3") := list(pmin(V2, V3), pmax(V2, V3))]
+
+out <- ddply(sumtable2,.(V2,V3),nrow)
+
+write.table(out, "allele_combinations.txt",quote=FALSE, col.names=FALSE,row.names=FALSE)
+q()
+```
+
+5) All going well, there should now be a file in your working directory called "allele_combinations.txt". You can examine it and see what combinations of closest relatives for each allele were found across the gene-trees. "NSSS" is an abbreviation for "no single sister species" e.g. in this case the hybrid allele was sister to a clade containing multiple taxa.
+
+
+
 
