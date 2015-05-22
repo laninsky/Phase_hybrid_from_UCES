@@ -1,4 +1,4 @@
-# Phase_hybrid_from_UCES
+# Phasing_step
 Have you got a hybrid in your ultra-conserved element dataset, and you want to confirm its parent species? Then boy, do I have the pipeline for you! This first step ("Phase_hybrid_from_UCES") is pulling out the phased data for our hybrid. A subsequent step will deal with figuring out which species each allele is most closely related to.
 
 It is assumed you have already run your data through the established UCE pipelines (e.g. https://github.com/carloliveros/uce-scripts, https://github.com/faircloth-lab/phyluce). Here, you have access to a folder full of fasta alignments for all your UCEs, and you know what you have named your hybrid, and you've uploaded the dependent Rscripts into the same directory full of your fasta alignments.
