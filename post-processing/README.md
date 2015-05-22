@@ -11,3 +11,10 @@ for i in *.fasta; do mv $i temp; mafft temp > $i; done;
 python /public/uce/phyluce/bin/align/convert_one_align_to_another.py --alignments uces --output phylip/ --input-format fasta --output-format phylip
 python /public/uce/phyluce/bin/genetrees/phyluce_genetrees_run_raxml_genetrees.py --input phylip --output phase_genetrees --outgroup k_med_d --cores 6 --quiet 2>&1 | tee kaloula_log/raxml_genetrees.txt
 ```
+
+3) We then need to navigate to the folder with all our genetrees in it (in my case 'phase_genetrees'). We want to create a file similar to 'all-best-trees.tre', except with UCE names tied to each tree:
+```
+touch ubertree.tre
+for i in `ls --color=never -d */`; do dirn=`echo $i | sed 's/\///'`; printname=`cat $dirn/RAxML_bestTree.best`; echo $dirn $printtree >> ubertree.tre; done;
+```
+
