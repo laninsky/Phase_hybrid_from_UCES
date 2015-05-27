@@ -18,7 +18,7 @@ touch ubertree.tre
 for i in `ls --color=never`; do if [ -d $i ]; then printname=`cat $i/RAxML_bestTree.best`; echo $i $printname >> ubertree.tre; fi; done 
 ```
 
-4) Now we are going to use some R code to pull out the clades with just our hybrid in it. This assumes you've already installed the library package stringr, data.table and plyr e.g. install.packages("stringr")
+4) Now we are going to use some R code to pull out the clades with just our hybrid in it. This assumes you've already installed the library package stringr, data.table and plyr e.g. install.packages("stringr"). Make sure to change out "k_pixme" for your actual hybrid's name...
 ```
 library(stringr)
 library(data.table)
