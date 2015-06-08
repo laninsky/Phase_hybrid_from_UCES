@@ -34,7 +34,7 @@ x <- 1
 j <- 1
 
 while (j < rows) {
-if ((length(grep("k_pixme",to_write[j,1])))>0) {
+if ((length(grep("k_pix_e",to_write[j,1])))>0) {
 to_write_hybrid[1,1] <-  to_write[j,1]
 to_write_hybrid[2,1] <-  to_write[(j+1),1]
 } else {
