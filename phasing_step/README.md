@@ -12,7 +12,7 @@ Things you'll need to change in the shell script to run this yourself:
 
 --the pathways to your reads
 
---any mention of 'k_pixme' (my hybrid species!) needs to be replaced with your own hybrid species name.
+--any mention of 'k_pix_e' (my hybrid species!) needs to be replaced with your own hybrid species name.
 
 --you'll also need to change some of this stuff inside the R code that this shell calls (extract_hybrid.R and onelining.R)
 
@@ -21,7 +21,7 @@ There are a few things you'll need to change in this code to get it to run:
 
 -- First-off, you need to change no_taxa to whatever the number of taxa in your alignment is * 2 (e.g. if you have 24 samples, this needs to be 48)
 
--- You need to find and replace any mention of 'k_pixme' with your actual hybrid name. This code is spitting out a separate fasta file for the hybrid and the rest of your data so that we can use the hybrid-specific sequence for the reference-guided alignment.
+-- You need to find and replace any mention of 'k_pix_e' with your actual hybrid name. This code is spitting out a separate fasta file for the hybrid and the rest of your data so that we can use the hybrid-specific sequence for the reference-guided alignment.
 
 ###onelining.R###
 You shouldn't have to change anything on this guy - he should be good to go. This is just taking out the line breaks from the fasta sequence to put it all on one line.
