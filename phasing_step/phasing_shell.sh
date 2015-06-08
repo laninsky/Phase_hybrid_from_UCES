@@ -20,7 +20,7 @@ java -jar /home/a499a400/bin/GenomeAnalysisTK.jar -T ReadBackedPhasing -R hybrid
 java -jar /home/a499a400/bin/GenomeAnalysisTK.jar -T FastaAlternateReferenceMaker -V temp_phased_SNPs.vcf -R hybrid_ref.fa -o temp_alt.fa;
 touch "ONE"_$i;
 Rscript onelining.R;
-sed -i 's/>1/>k_pixme/g' hybrid_ref2.fa;
+sed -i 's/>1/>k_pix_e/g' hybrid_ref2.fa;
 cat temp.fa hybrid_ref2.fa >> "ONE"_$i;
 rm -rf hybrid_ref.*;
 mv hybrid_ref2.fa hybrid_ref.fa;
@@ -42,6 +42,6 @@ java -jar /home/a499a400/bin/GenomeAnalysisTK.jar -T ReadBackedPhasing -R hybrid
 java -jar /home/a499a400/bin/GenomeAnalysisTK.jar -T FastaAlternateReferenceMaker -V temp_phased_SNPs.vcf -R hybrid_ref.fa -o temp_alt.fa;
 touch "TWO"_$i;
 Rscript onelining.R;
-sed -i 's/>1/>k_pixme/g' hybrid_ref2.fa;
+sed -i 's/>1/>k_pix_e/g' hybrid_ref2.fa;
 cat temp.fa hybrid_ref2.fa >> "TWO"_$i;
 done;
