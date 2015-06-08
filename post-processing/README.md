@@ -75,8 +75,65 @@ write.table(out, "allele_combinations.txt",quote=FALSE, col.names=FALSE,row.name
 q()
 ```
 
-5) All going well, there should now be a file in your working directory called "allele_combinations.txt". You can examine it and see what combinations of closest relatives for each allele were found across the gene-trees. "NSSS" is an abbreviation for "no single sister species" e.g. in this case the hybrid allele was sister to a clade containing multiple taxa.
+5) All going well, there should now be a file in your working directory called "allele_combinations.txt". You can examine it and see what combinations of closest relatives for each allele were found across the gene-trees. "NSSS" is an abbreviation for "no single sister species" e.g. in this case the hybrid allele was sister to a clade containing multiple taxa. However, if your dataset is like mine, the fun doesn't stop there... potentially there other hybrids "messing" up your analysis that you want to remove before doing the analysis above. This code should prune your problem child and then run the same code above (NB: problem child here is k_cfc_r - replace this with your actual problem child, and don't forget to also replace the hybrid code with your sample of interest).
+```
+library(stringr)
+library(data.table)
+library(plyr)
+intable <- as.matrix(read.table("ubertree.tre"))
+lenintable <- dim(intable)[1]
+temptable <- matrix(NA, nrow=lenintable,ncol=3)
 
+for (j in 1:lenintable) {
+temptable[j,1] <- unlist(strsplit(intable[j,1],"_"))[2]
+temptable[j,2] <- unlist(strsplit(intable[j,1],"_"))[1]
+temptable[j,3] <- "NSSS"
+temp <- gsub(":[0-9]+\\.[0-9]+","",intable[j,2])
+temp <- gsub("k_cfc_r","",temp)
+temp <- gsub("\\(,","",temp)
+temp <- unlist(strsplit(temp,"\\("))
+lentemp <- length(temp)
+for (i in 1:lentemp) {
+if ((length(grep("k_pix_e",temp[i])))>0) {
+if ((length(grep("k_[a-z]{3}_[a-z],k_pix_e\\))",temp[i])))>0) {
+temptable[j,3] <- unlist(strsplit(temp[i],","))[1]
+}
+if ((length(grep("k_pix_e,k_[a-z]{3}_[a-z]\\))",temp[i])))>0) {
+temptable[j,3] <- unlist(strsplit((gsub("k_pix_e,","",temp[i],fixed=TRUE)),"\\)"))[1]
+}
+}
+}
+}
+
+rm(intable)
+rm(temp)
+rm(lentemp)
+rm(i)
+rm(j)
+
+temptable <- temptable[order(temptable[,1]),]
+sumtable <- matrix(NA,ncol=3,nrow=(lenintable/2))
+
+sumtable[1,1] <- temptable[1,1]
+sumtable[1,2] <- temptable[1,3]
+sumtable[1,3] <- temptable[2,3]
+
+i <- 3
+while (i < lenintable) {
+j <- (i+1)/2
+sumtable[j,1] <- temptable[i,1]
+sumtable[j,2] <- temptable[i,3]
+sumtable[j,3] <- temptable[i+1,3]
+i <- i+2
+}
+
+sumtable2 <- as.data.table(sumtable)[,c("V2","V3") := list(pmin(V2, V3), pmax(V2, V3))]
+
+out <- ddply(sumtable2,.(V2,V3),nrow)
+
+write.table(out, "allele_combinations.txt",quote=FALSE, col.names=FALSE,row.names=FALSE)
+q()
+```
 
 
 
