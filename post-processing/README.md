@@ -18,7 +18,7 @@ touch ubertree.tre
 for i in `ls --color=never`; do if [ -d $i ]; then printname=`cat $i/RAxML_bestTree.best`; echo $i $printname >> ubertree.tre; fi; done 
 ```
 
-4) Now we are going to use some R code to pull out the clades with just our hybrid in it. This assumes you've already installed the library package stringr, data.table and plyr e.g. install.packages("stringr"). It also assumes that all your names are in the format k_abc_x. You'll need to adjust the regular expressions if not. Make sure to change out "k_pixme" for your actual hybrid's name...
+4) Now we are going to use some R code to pull out the clades with just our hybrid in it. This assumes you've already installed the library package stringr, data.table and plyr e.g. install.packages("stringr"). It also assumes that all your names are in the format k_abc_x. You'll need to adjust the regular expressions if not. Make sure to change out "k_pix_e" for your actual hybrid's name...
 ```
 library(stringr)
 library(data.table)
@@ -34,12 +34,12 @@ temptable[j,3] <- "NSSS"
 temp <- unlist(strsplit((gsub(":[0-9]+\\.[0-9]+","",intable[j,2],fixed=FALSE)),"\\("))
 lentemp <- length(temp)
 for (i in 1:lentemp) {
-if ((length(grep("k_pixme",temp[i])))>0) {
-if ((length(grep("k_[a-z]{3}_[a-z],k_pixme\\))",temp[i])))>0) {
+if ((length(grep("k_pix_e",temp[i])))>0) {
+if ((length(grep("k_[a-z]{3}_[a-z],k_pix_e\\))",temp[i])))>0) {
 temptable[j,3] <- unlist(strsplit(temp[i],","))[1]
 }
-if ((length(grep("k_pixme,k_[a-z]{3}_[a-z]\\))",temp[i])))>0) {
-temptable[j,3] <- unlist(strsplit((gsub("k_pixme,","",temp[i],fixed=TRUE)),"\\)"))[1]
+if ((length(grep("k_pix_e,k_[a-z]{3}_[a-z]\\))",temp[i])))>0) {
+temptable[j,3] <- unlist(strsplit((gsub("k_pix_e,","",temp[i],fixed=TRUE)),"\\)"))[1]
 }
 }
 }
