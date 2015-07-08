@@ -1,5 +1,6 @@
 intable <- read.table("temp",header=FALSE,stringsAsFactors=FALSE,sep="\t")
 variables <- read.table("phasing_settings",header=FALSE,stringsAsFactors=FALSE,sep="\t")
+namefile <- read.table("namefile",header=FALSE,stringsAsFactors=FALSE,sep="\t")
 
 rows <- dim(intable)[1]
 
@@ -36,7 +37,7 @@ j <- 1
 
 while (j < rows) {
 if ((length(grep(hybridname,to_write[j,1])))>0) {
-to_write_hybrid[1,1] <-  to_write[j,1]
+to_write_hybrid[1,1] <-  paste(">",namefile[1,1],sep="")
 to_write_hybrid[2,1] <-  to_write[(j+1),1]
 } else {
 to_write_temp[x,1] <-  to_write[j,1]
