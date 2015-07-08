@@ -1,27 +1,27 @@
 # Phasing_step
-Have you got a hybrid in your ultra-conserved element dataset, and you want to confirm its parent species? Then boy, do I have the pipeline for you! This first step ("Phase_hybrid_from_UCES") is pulling out the phased data for our hybrid. A subsequent step will deal with figuring out which species each allele is most closely related to.
+Have you got a hybrid in your RADseq/UCE dataset, and you want to confirm its parent species? Then boy, do I have the pipeline for you! This first step ("Phase_hybrid_from_data") is pulling out the phased data for our hybrid. A subsequent step will deal with figuring out which species each allele is most closely related to.
 
-It is assumed you have already run your data through the established UCE pipelines (e.g. https://github.com/carloliveros/uce-scripts, https://github.com/faircloth-lab/phyluce). Here, you have access to a folder full of fasta alignments for all your UCEs, and you know what you have named your hybrid, and you've uploaded the dependent Rscripts into the same directory full of your fasta alignments.
+It is assumed you have already run your data through the established RADseq/UCE initial processing pipelines (e.g. STACKS, pyRAD, https://github.com/carloliveros/uce-scripts, https://github.com/faircloth-lab/phyluce etc). For this program to work, you have access to a folder full of fasta alignments (full alignments, not just SNPs) for the loci you want to use (with any missing samples padded out with Ns or ?s), you know the samplename of your hybrid, and you've got the phasing_shell.sh script, extract_hybrid.R and onelining.R in your directory along with your phase_settings file (see below). You've got your cleaned reads in a fastq.gz file (with separate forward and reverse files if you have paired end sequencing), and you know the path to these reads.
+
+You'll also need to have installed bwa, samtools, R and Java, and added these to your path. You'll also need to install GenomeAnalysisTK.jar (GATK) and picard.jar (picard), but we'll actually need the full pathway to these jars in the phase_settings folder below. 
 
 ###phasing_shell.sh###
-The shell script is using bwa, gatk, samtools and R to pull out the hybrid sample (R), do a reference-guided assembly (bwa, samtools) using cleaned-data you trimmed during the uce pipeline step, and then calling variants/phasing these (gatk), before using the "new reference" to do the process again to get the other allele for your hybrid.
+The shell script is using bwa, gatk, samtools and R to pull out the hybrid sample (R), do a reference-guided assembly (bwa, samtools) on your cleaned *.fastq.gz reads from your hybrid, and then calling variants/phasing these (gatk), before using the "new reference" to do the process again to get the other alleles for your hybrid.
 
-Things you'll need to change in the shell script to run this yourself:
+To run this yourself you will need a file with the input settings named phase_settings in the folder with your fasta sequences. In this file, on each separate line in this order you will need:
 
---the pathways to the programs
+Line 1: the absolute pathway to GenomeAnalysisTK.jar e.g. /home/a499a400/bin/GenomeAnalysisTK.jar
 
---the pathways to your reads
+Line 2: the absolute pathway to picard.jar e.g. /home/a499a400/bin/picard/dist/picard.jar
 
---any mention of 'k_pix_e' (my hybrid species!) needs to be replaced with your own hybrid species name.
+Line 3: the total number of taxa in your fasta files e.g. 24
 
---you'll also need to change some of this stuff inside the R code that this shell calls (extract_hybrid.R and onelining.R)
+Line 4: your hybrid sample name as it appears in your fasta files e.g. k_pixme
 
-###extract_hybrid.R####
-There are a few things you'll need to change in this code to get it to run:
+Line 5: either paired or single depending on your sequencing method e.g. paired
 
--- First-off, you need to change no_taxa to whatever the number of taxa in your alignment is * 2 (e.g. if you have 24 samples, this needs to be 48)
+Line 6: If you had paired on the previous line, here you need the pathway to your cleaned forward reads. If you had single, then just the general pathway to your cleaned reads e.g. /home/a499a400/Kaloula/cleaned-reads/kaloula_pictameridionalishybrid_rmb586/split-adapter-quality-trimmed/kaloula_pictameridionalishybrid_rmb586-READ1.fastq.gz
 
--- You need to find and replace any mention of 'k_pix_e' with your actual hybrid name. This code is spitting out a separate fasta file for the hybrid and the rest of your data so that we can use the hybrid-specific sequence for the reference-guided alignment.
+Line 7: If you wrote paired on Line 5, then here you need the pathway to your cleaned reverse reads e.g. /home/a499a400/Kaloula/cleaned-reads/kaloula_pictameridionalishybrid_rmb586/split-adapter-quality-trimmed/kaloula_pictameridionalishybrid_rmb586-READ2.fastq.gz
 
-###onelining.R###
-You shouldn't have to change anything on this guy - he should be good to go. This is just taking out the line breaks from the fasta sequence to put it all on one line.
+See the example phase_settings file under 'examples'
