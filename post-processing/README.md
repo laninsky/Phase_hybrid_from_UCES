@@ -1,15 +1,52 @@
 #Post-processing#
-Now we have our phased alleles for the hybrid tacked on to the fasta with the rest of our samples. In ONE_uce-xxx.fasta we have the first allele and the rest of our samples. In TWO_uce-xxx.fasta we have the second allele and the rest of our samples. You can go ahead and delete the rest of the stuff.
+Now we have our phased alleles for the hybrid tacked on to the fasta with the rest of our samples. In ONE_uce-xxx.fasta we have the first allele and the rest of our samples. In TWO_uce-xxx.fasta we have the second allele and the rest of our samples.
 
-1) The first step is to re-align our hybrid alleles and the rest of the sequences, as indels were stripped out of the hybrid file so that gatk could eat the sequence for phasing. I am going to use MAFFT for this:
+1) The first step is to copy all of these files to a new folder, just in case we stuff up at any of the downstream steps, so that we don't have to repeat everything
 ```
+mkdir fasta
+cp *.fasta fasta
+```
+
+2) Now we are going to re-align our hybrid alleles and the rest of the sequences, as indels were stripped out of the hybrid file so that gatk could eat the sequence for phasing. I am going to use MAFFT for this, but you could pick your favorite aligher:
+```
+cd fasta
 for i in *.fasta; do mv $i temp; mafft temp > $i; done;
+rm temp
 ```
 
-2) Next, we need to convert our fasta alignments to phylip so we can run raxml. We'll use the phyluce wrappers for this (code quite liberarlly borrowed from Carl Oliveros - https://github.com/carloliveros/uce-scripts/blob/master/Species%20tree.md - thanks Carl!). Set the --alignments argument in the convert script to be where your fasta files are. You'll also want to select an appropriate outgroup for the 'phyluce_genetrees_run_raxml_genetrees.py' wrapper:
+3) Now, you might be in the situation where you have multiple hybrids/samples of uncertain taxonomic status in your dataset. These are going to muddle things up a little, because if the hybrid you have phased maps back to one of these 'uncertains', that doesn't give you a lot of information on the putative parental species of the hybrid you are interested in. So... at this point we can run remove_uncertains.R before we move on to the raxml stage. To do this, you'll need to set up the file 'species_assignments'. You might as well do this now, anyway, because you are going to need it later on. This file has the sample names in the first column (tab delimited), and the species/taxon designations you'd like to use in the second column. Make sure to put 'hybrid' for your putative hybrid, and 'uncertain' for any samples you think should be removed from your dataset e.g.
 ```
-python /public/uce/phyluce/bin/align/convert_one_align_to_another.py --alignments uces --output phylip/ --input-format fasta --output-format phylip
-python /public/uce/phyluce/bin/genetrees/phyluce_genetrees_run_raxml_genetrees.py --input phylip --output phase_genetrees --outgroup k_med_d --cores 6 --quiet 2>&1 | tee kaloula_log/raxml_genetrees.txt
+k_bal_r baleata
+k_cfc_r uncertain
+k_war_r k_war_r
+k_con_r conjuncta
+k_wal_r uncertain
+k_pixme hybrid
+k_mer_r meridionalis
+k_koc_r kocakii
+k_bal_r baleata
+```
+
+Upload species_assignments and remove_uncertains.R to the fasta directory which has your aligned fasta files in it (e.g. working_dir/fasta) and run it by:
+```
+for i in `ls *.fasta`;
+do mv $i temp;
+Rscript remove_uncertains.R
+mv temp.fa $i;
+rm -rf temp;
+done;
+```
+
+4) Next, we need to convert our fasta alignments to phylip so we can run raxml. We'll use the phyluce wrappers for this (code quite liberarlly borrowed from Carl Oliveros - https://github.com/carloliveros/uce-scripts/blob/master/Species%20tree.md - thanks Carl!). Set the --alignments argument in the convert script to be where your fasta files are. You'll also want to select an appropriate outgroup for the 'phyluce_genetrees_run_raxml_genetrees.py' wrapper (if you are coming from RadSEQ/other next-gen methods, then you'll need to have phyluce installed... if you are coming from a UCE background you probably have it installed already!):
+
+```
+cd ..
+python /public/uce/phyluce/bin/align/convert_one_align_to_another.py --alignments fasta --output phylip/ --input-format fasta --output-format phylip
+```
+
+5) We then use the phyluce wrappers to run raxml for each of our loci. Make sure to change the outgroup species in the code below to whatever it should be for your dataset 
+```
+python /public/uce/phyluce/bin/genetrees/phyluce_genetrees_run_raxml_genetrees.py --input phylip --output phase_genetrees --outgroup change_this_to_your_outgroup_sp --cores 6 --quiet 2>&1 | tee kaloula_log/raxml_genetrees.txt
 ```
 
 3) We then need to navigate to the folder with all our genetrees in it (in my case 'phase_genetrees'). We want to create a file similar to 'all-best-trees.tre', except with UCE names tied to each tree:
