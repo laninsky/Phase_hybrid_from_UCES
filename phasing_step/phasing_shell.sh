@@ -82,5 +82,13 @@ mv hybrid_ref2.fa hybrid_ref.fa;
 mv safehybrid_ref.fa hybrid_ref2.fa
 rm -rf temp*;
 
+for i in `ls *.fasta`;
+name1="ONE_$i";
+name2="TWO_$i";
+cp $i $name1;
+mv $i $name2;
+done;
+
+
+
 Rscript allelelifying.R;
-#Now need an R script to create the ONE_ and TWO_ files that the next step expects to eat
