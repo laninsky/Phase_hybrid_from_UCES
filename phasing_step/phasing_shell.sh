@@ -83,12 +83,10 @@ mv safehybrid_ref.fa hybrid_ref2.fa
 rm -rf temp*;
 
 for i in `ls *.fasta`;
-name1="ONE_$i";
+do name1="ONE_$i";
 name2="TWO_$i";
 cp $i $name1;
 mv $i $name2;
 done;
-
-
 
 Rscript allelelifying.R;
