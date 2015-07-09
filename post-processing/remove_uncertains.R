@@ -1,5 +1,5 @@
 intable <- read.table("temp",header=FALSE,stringsAsFactors=FALSE,sep="\t")
-species <- read.table("species_assignments",header=FALSE,stringsAsFactors=FALSE,sep="\t")
+species <- read.table("species_assignments",header=FALSE,stringsAsFactors=FALSE)
 
 rows <- dim(intable)[1]
 
