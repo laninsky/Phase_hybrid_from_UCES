@@ -49,7 +49,7 @@ python /public/uce/phyluce/bin/align/convert_one_align_to_another.py --alignment
 
 5) We then use the phyluce wrappers to run raxml for each of our loci. You'll want to select an appropriate outgroup e.g. k_bal_r, tweak the number of cores if 6 is too few/too many, and edit the pathway to phyluce_genetrees_run_raxml_genetrees.py
 ```
-python /public/uce/phyluce/bin/genetrees/phyluce_genetrees_run_raxml_genetrees.py --input phylip --output phase_genetrees --outgroup change_this_to_your_outgroup_sp --cores 6 --quiet 2>&1 | tee kaloula_log/raxml_genetrees.txt
+python /public/uce/phyluce/bin/genetrees/phyluce_genetrees_run_raxml_genetrees.py --input phylip --output phase_genetrees --outgroup change_this_to_your_outgroup_sp --cores 6 --quiet 2>&1 | tee log/raxml_genetrees.txt
 
 ```
 
