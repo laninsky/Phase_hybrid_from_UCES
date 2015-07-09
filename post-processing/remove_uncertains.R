@@ -37,3 +37,5 @@ sequencepaste <- paste(sequencepaste,intable[j,1],sep="")
 to_write[(no_final_taxa*2),1] <- sequencepaste
 
 write.table(to_write, "temp.fa",quote=FALSE, col.names=FALSE,row.names=FALSE)
+
+q()
