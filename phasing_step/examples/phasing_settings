@@ -1,0 +1,7 @@
+/home/a499a400/bin/GenomeAnalysisTK.jar
+/home/a499a400/bin/picard/dist/picard.jar
+24
+k_pixme
+paired
+/home/a499a400/Kaloula/cleaned-reads/kaloula_pictameridionalishybrid_rmb586/split-adapter-quality-trimmed/kaloula_pictameridionalishybrid_rmb586-READ1.fastq.gz
+/home/a499a400/Kaloula/cleaned-reads/kaloula_pictameridionalishybrid_rmb586/split-adapter-quality-trimmed/kaloula_pictameridionalishybrid_rmb586-READ2.fastq.gz
