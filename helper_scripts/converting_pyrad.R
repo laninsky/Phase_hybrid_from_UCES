@@ -17,3 +17,4 @@ tempy <- rbind(unlist(strsplit(intable[j,1],"[\\s ]+",fixed=FALSE))[1],unlist(st
 tempfile <- rbind(tempfile,tempy)
 }
 }
+q()
