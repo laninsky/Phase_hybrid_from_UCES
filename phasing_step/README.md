@@ -15,6 +15,11 @@ It is assumed you have already run your data through the established RADseq/UCE 
 
 You'll also need to have installed bwa, samtools, R and Java, and added these to your path. You'll also need to install GenomeAnalysisTK.jar (GATK) and picard.jar (picard), but we'll actually need the full pathway to these jars in the phasing_settings folder below. 
 
+#Coming from pyRAD#
+
+Your .loci file can be turned in a folder of fasta alignments using the scripts at:
+https://github.com/laninsky/Phase_hybrid_from_next_gen/tree/master/helper_scripts
+
 #Getting your phasing_settings file together#
 
 The shell script is using bwa, gatk, samtools and R to pull out the hybrid sample (R), do a reference-guided assembly (bwa, samtools) on your cleaned *.fastq.gz reads from your hybrid, and then calling variants/phasing these (gatk), before using the "new reference" to do the process again to get the other alleles for your hybrid.
