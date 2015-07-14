@@ -14,7 +14,7 @@ cp *.fasta fasta
 cd fasta
 ```
 
-3) You might be in the situation where you have multiple hybrids/samples of uncertain taxonomic status in your dataset. These are going to muddle things up a little, because if the hybrid you have phased maps back to one of these 'uncertains', that doesn't give you a lot of information on the putative parental species of the hybrid you are interested in. So... at this point we can run remove_uncertains.R before we move on to the raxml stage. To do this, you'll need to set up the file 'species_assignments'. You might as well do this now, anyway, because you are going to need it later on. This file has the sample names (make sure you include all the samples that are in your fasta files!) in the first column (tab delimited), and the species/taxon designations you'd like to use in the second column. Make sure to put 'hybrid' for your putative hybrid, and 'uncertain' for any samples you think should be removed from your dataset. Also make sure to remake this file if you are running this pipeline multiple different times for different putative hybrids! Example of 'species_assignments':
+3) You might be in the situation where you have multiple hybrids/samples of uncertain taxonomic status in your dataset. These are going to muddle things up a little, because if the hybrid you have phased maps back to one of these 'uncertains', that doesn't give you a lot of information on the putative parental species of the hybrid you are interested in. So... at this point we can run remove_uncertains.R before we move on to the raxml stage. To do this, you'll need to set up the file 'species_assignments'. You might as well do this now, anyway, because you are going to need it later on. Also even if you aren't planning on removing any uncertains, run the script anyway, because it helps reformat the file after MAFFT wraps the lines in it, and removes any samples completely comprised of missing data. This file has the sample names (make sure you include all the samples that are in your fasta files!) in the first column (tab delimited), and the species/taxon designations you'd like to use in the second column. Make sure to put 'hybrid' for your putative hybrid, and 'uncertain' for any samples you think should be removed from your dataset. Also make sure to remake this file if you are running this pipeline multiple different times for different putative hybrids! Example of 'species_assignments':
 ```
 k_bal_r baleata
 k_cfc_r uncertain
@@ -38,7 +38,7 @@ rm -rf temp;
 done;
 ```
 
-Even if you aren't planning on removing any uncertains, run the script anyway, because it helps reformat the file after MAFFT wraps the lines in it.
+
 
 4) Next, we need to convert our fasta alignments to phylip so we can run raxml. We'll use the phyluce wrappers for this (code quite liberarlly borrowed from Carl Oliveros - https://github.com/carloliveros/uce-scripts/blob/master/Species%20tree.md - thanks Carl! If you are coming from RadSEQ/other next-gen methods, then you'll need to have python/phyluce installed... if you are coming from a UCE background you probably have it installed already!). Tweak the pathway to your convert_one_align_to_another.py file within the phyluce installation:
 
@@ -47,10 +47,26 @@ cd ..
 python /public/uce/phyluce/bin/align/convert_one_align_to_another.py --alignments fasta --output phylip/ --input-format fasta --output-format phylip
 ```
 
-5) We then use the phyluce wrappers to run raxml for each of our loci. You'll want to select an appropriate outgroup e.g. k_bal_r, tweak the number of cores if 6 is too few/too many, and edit the pathway to phyluce_genetrees_run_raxml_genetrees.py
+5a) We can then use the phyluce wrappers to run raxml for each of our loci IF WE HAVE A COMPLETE DATASET (i.e. no missing samples for any loci - if this is you, see step 5b). You'll want to select an appropriate outgroup e.g. k_bal_r, tweak the number of cores if 6 is too few/too many, and edit the pathway to phyluce_genetrees_run_raxml_genetrees.py. You also need raxml to be installed and in your path.
 ```
 python /public/uce/phyluce/bin/genetrees/phyluce_genetrees_run_raxml_genetrees.py --input phylip --output phase_genetrees --outgroup change_this_to_your_outgroup_sp --cores 6 --quiet 2>&1 | tee log/raxml_genetrees.txt
 
+```
+
+5b) If we have missing samples for some of our loci, we can't use the wrapper because it assumes the outgroup we specify is present in every locus. So, we have to do this a little more manually...make sure raxml is installed and in your path.
+```
+mkdir phase_genetrees
+wd=`pwd`
+cd phylip
+unset i
+
+for i in `ls *.phylip`;
+do mkdir ../phase_genetrees/$i
+toraxml="raxmlHPC-SSE3 -m GTRGAMMA -n best -s $wd/phylip/$i -p $RANDOM -w $wd/phase_genetrees/$i --no-bfgs"
+$toraxml;
+done;
+
+cd ..
 ```
 
 6) We then need to navigate to the folder with all our genetrees in it. We create a file similar to 'all-best-trees.tre', except with UCE names tied to each tree:
