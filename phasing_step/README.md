@@ -3,7 +3,15 @@ Have you got a hybrid in your RADseq/UCE dataset, and you want to confirm its pa
 
 #Steps you need to do before running the script#
 
-It is assumed you have already run your data through the established RADseq/UCE initial processing pipelines (e.g. STACKS, pyRAD, https://github.com/carloliveros/uce-scripts, https://github.com/faircloth-lab/phyluce etc). For this program to work, you have access to a folder full of fasta alignments (full alignments, not just SNPs - and a separate fasta file per locus, not concatenated) for the loci you want to use (with any missing samples padded out with Ns or ?s), you know the sample name of your hybrid, and you've got the phasing_shell.sh, extract_hybrid.R, onelining.R and allelifying.R scripts in your directory along with your phasing_settings file (see below). You've got your cleaned reads in a fastq.gz file (with separate forward and reverse files if you have paired end sequencing), and you know the path to these reads.
+It is assumed you have already run your data through the established RADseq/UCE initial processing pipelines (e.g. STACKS, pyRAD, https://github.com/carloliveros/uce-scripts, https://github.com/faircloth-lab/phyluce etc). For this program to work, you need to have a folder that contains:
+
+-- fasta alignments (full alignments, not just SNPs - and a separate fasta file per locus, not concatenated) for the loci you want to use (with any missing samples padded out with Ns or ?s), 
+
+-- phasing_shell.sh
+
+-- The R-scripts: extract_hybrid.R, onelining.R and allelifying.R scripts
+
+-- Your phasing_settings file (see below).
 
 You'll also need to have installed bwa, samtools, R and Java, and added these to your path. You'll also need to install GenomeAnalysisTK.jar (GATK) and picard.jar (picard), but we'll actually need the full pathway to these jars in the phasing_settings folder below. 
 
@@ -11,7 +19,7 @@ You'll also need to have installed bwa, samtools, R and Java, and added these to
 
 The shell script is using bwa, gatk, samtools and R to pull out the hybrid sample (R), do a reference-guided assembly (bwa, samtools) on your cleaned *.fastq.gz reads from your hybrid, and then calling variants/phasing these (gatk), before using the "new reference" to do the process again to get the other alleles for your hybrid.
 
-To run this yourself you will need a file with the input settings named phasing_settings in the folder with your fasta sequences. In this file, on each separate line in this order you will need:
+To run this yourself you will need a file with the input settings named phasing_settings in the folder with your fasta sequences and the scripts. In this file, on each separate line in this order you will need:
 
 Line 1: the absolute pathway to GenomeAnalysisTK.jar e.g. /home/a499a400/bin/GenomeAnalysisTK.jar
 
