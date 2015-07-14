@@ -53,7 +53,7 @@ python /public/uce/phyluce/bin/genetrees/phyluce_genetrees_run_raxml_genetrees.p
 
 ```
 
-5b) If we have missing samples for some of our loci, we can't use the wrapper because it assumes the outgroup we specify is present in every locus. So, we have to do this a little more manually...make sure raxml is installed and in your path.
+5b) If we have missing samples for some of our loci, we can't use the wrapper because it assumes the outgroup we specify is present in every locus. So, we have to do this a little more manually...make sure raxml is installed and in your path. If your raxml is called something different to 'raxmlHPC-SSE3', modify this in the code below.
 ```
 mkdir phase_genetrees
 wd=`pwd`
