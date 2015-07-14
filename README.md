@@ -7,3 +7,4 @@ The first step is in the folder phasing_step. There is a readme in that folder t
 
 The second step is in the folder post-processing. There is also a readme in there to help you too!
 
+If you are coming from pyRAD, you can use the scripts in helper_scripts to get your fasta files together from the *.loci file.
