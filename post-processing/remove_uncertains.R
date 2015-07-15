@@ -12,12 +12,10 @@ tempname <- NULL
 
 for (j in 1:rows) {
 if ((length(grep(">",intable[j,1])))>0) {
-if(!(any(uncertains %in% (gsub(">","",intable[j,1]))))) {
 if(!(is.null(sequencepaste))) {
 if ((nchar(gsub("N","",gsub("-","",sequencepaste),ignore.case=T)))>0) {
 to_write <- rbind(to_write,tempname)
 to_write <- rbind(to_write,sequencepaste)
-}
 }
 }
 tempname <- intable[j,1]
@@ -36,6 +34,19 @@ if ((length(grep(">",to_write[1,1])))==0) {
 to_write <- rbind(intable[1,1],to_write)
 }
 
-write.table(to_write, "temp.fa",quote=FALSE, col.names=FALSE,row.names=FALSE)
+rows <- dim(to_write)[1]
+to_write_unc <- NULL
+
+j <- 1
+
+while (j < rows) {
+if(!(any(uncertains %in% (gsub(">","",to_write[j,1]))))) {
+to_write_unc <- rbind(to_write_unc,to_write[j,1])
+to_write_unc <- rbind(to_write_unc,to_write[j+1,1])
+}
+j <- j+2
+}
+
+write.table(to_write_unc, "temp.fa",quote=FALSE, col.names=FALSE,row.names=FALSE)
 
 q()
