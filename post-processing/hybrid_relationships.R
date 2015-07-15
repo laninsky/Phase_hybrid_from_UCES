@@ -1,7 +1,7 @@
 library(stringr)
 library(data.table)
 library(plyr)
-intable <- as.matrix(read.table("ubertree.tre"))
+intable <- as.matrix(read.table("ubertree.tre",fill=TRUE))
 species <- read.table("species_assignments",header=FALSE,stringsAsFactors=FALSE)
 
 hybrid <- species[species[,2]=="hybrid",1]
@@ -9,8 +9,8 @@ hybrid <- species[species[,2]=="hybrid",1]
 lenintable <- dim(intable)[1]
 temptable <- matrix(NA, nrow=lenintable,ncol=3)
 
-hybfirst <-paste("*,",hybrid,"\\)",sep="")
-hybsecond <-paste(hybrid,",.*","\\)",sep="")
+hybfirst <-paste("\\(*?,",hybrid,"\\)",sep="")
+hybsecond <-paste("\\(",hybrid,",.*?","\\)",sep="")
 hybreplace <- paste(hybrid,",", sep="")
 
 for (j in 1:lenintable) {
@@ -47,8 +47,8 @@ for (j in 1:no_taxa) {
 if (temptable[i,3]==species[j,1]) {
 if (!(species[j,2]=="hybrid")) {
 temptable[i,3] <- species[j,2]
-break
 }
+break
 }
 }
 }
