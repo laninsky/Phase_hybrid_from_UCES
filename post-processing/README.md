@@ -57,6 +57,9 @@ python /public/uce/phyluce/bin/genetrees/phyluce_genetrees_run_raxml_genetrees.p
 ```
 mkdir phase_genetrees
 screen
+```
+After 'screen', you might need to cd to the working directory (the one above your phylip directory), then...
+```
 wd=`pwd`
 cd phylip
 unset i
@@ -66,11 +69,10 @@ do mkdir ../phase_genetrees/$i
 toraxml="raxmlHPC-SSE3 -m GTRGAMMA -n best -s $wd/phylip/$i -p $RANDOM -w $wd/phase_genetrees/$i --no-bfgs"
 $toraxml;
 done;
+```
+To detach from this screen: Ctrl+A, Ctr+D. You'll then want to start another screen session (using 'screen' as above) and navigate to your working directory. Running these two screens allows us to run raxml simultaneously on two cores, but you can skip the screen and just run these sequentially if you would rather.
 
-Ctrl+A, Ctr+D
-
-screen
-cd to workingdir
+```
 wd=`pwd`
 cd phylip
 unset i
@@ -80,8 +82,6 @@ do mkdir ../phase_genetrees/$i
 toraxml="raxmlHPC-SSE3 -m GTRGAMMA -n best -s $wd/phylip/$i -p $RANDOM -w $wd/phase_genetrees/$i --no-bfgs"
 $toraxml;
 done;
-
-cd ..
 ```
 
 6) We then need to navigate to the folder with all our genetrees in it. We create a file similar to 'all-best-trees.tre', except with UCE names tied to each tree:
