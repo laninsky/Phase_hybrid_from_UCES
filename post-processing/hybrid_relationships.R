@@ -9,9 +9,10 @@ hybrid <- species[species[,2]=="hybrid",1]
 lenintable <- dim(intable)[1]
 temptable <- matrix(NA, nrow=lenintable,ncol=3)
 
-hybfirst <-paste("\\(.*?,",hybrid,"\\)",sep="")
-hybsecond <-paste("\\(",hybrid,",.*?","\\)",sep="")
-hybreplace <- paste(hybrid,",", sep="")
+hybfirst <-paste("*,",hybrid,"\\)",sep="")
+hybsecond <-paste(hybrid,",.*","\\)",sep="")
+hybreplace1 <- paste(",",hybrid,",", sep="")
+hybreplace2 <- paste(hybrid,",", sep="")
 
 for (j in 1:lenintable) {
 temptable[j,1] <- unlist(strsplit(intable[j,1],"_"))[2]
@@ -25,7 +26,11 @@ if ((length(grep(hybfirst,temp[i])))>0) {
 temptable[j,3] <- unlist(strsplit(temp[i],","))[1]
 }
 if ((length(grep(hybsecond,temp[i])))>0) {
-temptable[j,3] <- unlist(strsplit((gsub(hybreplace,"",temp[i],fixed=TRUE)),"\\)"))[1]
+if ((length(grep(hybreplace1,temp[i])))>0) {
+temptable[j,3] <- gsub("\\).*","",(unlist(strsplit((gsub(hybreplace2,",",temp[i],fixed=TRUE)),",,"))[2]))
+} else {
+temptable[j,3] <- unlist(strsplit((gsub(hybreplace2,"",temp[i],fixed=TRUE)),"\\)"))[1]
+}
 }
 }
 }
