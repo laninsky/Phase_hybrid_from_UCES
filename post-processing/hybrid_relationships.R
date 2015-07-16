@@ -9,7 +9,7 @@ hybrid <- species[species[,2]=="hybrid",1]
 lenintable <- dim(intable)[1]
 temptable <- matrix(NA, nrow=lenintable,ncol=3)
 
-hybfirst <-paste("\\(*?,",hybrid,"\\)",sep="")
+hybfirst <-paste("\\(.*?,",hybrid,"\\)",sep="")
 hybsecond <-paste("\\(",hybrid,",.*?","\\)",sep="")
 hybreplace <- paste(hybrid,",", sep="")
 
