@@ -45,3 +45,7 @@ See the example phasing_settings file under 'examples'
 #To run the script#
 
 bash phasing_shell.sh
+
+#Is the script running successfully?#
+
+The first few steps of phasing_shell.sh are bash/R so it might not look like it is doing much using top/htop. To confirm it is actually running, check your directory: the hybrid_ref.fa file should be growing in size as the scripts syphon off the hybrid into it. After these first steps, you should see bwa/java running through top/htop.
