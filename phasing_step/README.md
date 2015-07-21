@@ -5,7 +5,7 @@ Have you got a hybrid in your RADseq/UCE dataset, and you want to confirm its pa
 
 It is assumed you have already run your data through the established RADseq/UCE initial processing pipelines (e.g. STACKS, pyRAD, https://github.com/carloliveros/uce-scripts, https://github.com/faircloth-lab/phyluce etc). For this program to work, you need to have a folder that contains:
 
--- fasta alignments (full alignments, not just SNPs - and a separate fasta file per locus, not concatenated) for the loci you want to use (with any missing samples padded out with Ns or ?s), 
+-- fasta alignments (full alignments, not just SNPs. You also need a separate fasta file per locus, not one giant concatenated file) for the loci you want to use (with any missing samples padded out with Ns or ?s), 
 
 -- phasing_shell.sh
 
