@@ -9,4 +9,4 @@ The second step is in the folder post-processing. There is also a readme in ther
 
 If you are coming from pyRAD, you can use the scripts in helper_scripts to get your fasta files together from the *.loci file.
 
-[]!(https://cloud.githubusercontent.com/assets/8808649/8816841/906efdfa-2ff1-11e5-8287-e2ab2c541861.png)
+https://cloud.githubusercontent.com/assets/8808649/8816841/906efdfa-2ff1-11e5-8287-e2ab2c541861.png
