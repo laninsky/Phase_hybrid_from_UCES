@@ -32,7 +32,7 @@ Line 2: the absolute pathway to picard.jar e.g. /home/a499a400/bin/picard/dist/p
 
 Line 3: the total number of taxa in your fasta files e.g. 24
 
-Line 4: your hybrid sample name as it appears in your fasta files e.g. k_pixme
+Line 4: your hybrid sample name as it appears in your fasta files e.g. k_pixme [only one "hybrid" can be processed at a time. If you are doing non-hybrids as a control, you'll also put their name here]
 
 Line 5: either paired or single depending on your sequencing method e.g. paired
 
