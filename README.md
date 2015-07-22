@@ -1,7 +1,7 @@
 # Phase_hybrid_from_next-gen_data
 Have you got a hybrid in your next-gen dataset (currently developed for UCE and RadSEQ loci), and you want to confirm its parent species? Then boy, do I have the pipeline for you! You can either manually copy the R and bash scripts to your local computer, or use git clone.
 
-There are two sets of scripts to help with this:
+There are two sets of scripts to help with this (their relative contribution is outlined in the image below):
 
 The first step is in the folder phasing_step. There is a readme in that folder to help with those.
 
