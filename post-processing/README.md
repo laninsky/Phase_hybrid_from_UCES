@@ -84,6 +84,10 @@ $toraxml;
 done;
 ```
 
+Note: if you get the error: ```: illegal option -- - ``` then you might need to modify the following line in the above code:
+```toraxml="raxmlHPC-SSE3 -m GTRGAMMA -n best -s $wd/phylip/$i -p $RANDOM -w $wd/phase_genetrees/$i --no-bfgs"```
+to specify the number of threads that are needed by -T
+
 6) We then need to navigate to the folder with all our genetrees in it. We create a file similar to 'all-best-trees.tre', except with UCE names tied to each tree:
 ```
 cd phase_genetrees
