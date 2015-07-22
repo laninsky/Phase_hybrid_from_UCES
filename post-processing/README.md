@@ -38,7 +38,7 @@ rm -rf temp;
 done;
 ```
 
-
+This step can take a while (because it now has to process 2* the alignments), but if you use `ls -l` you can watch the progress as it ticks along.
 
 4) Next, we need to convert our fasta alignments to phylip so we can run raxml. We'll use the phyluce wrappers for this (code quite liberarlly borrowed from Carl Oliveros - https://github.com/carloliveros/uce-scripts/blob/master/Species%20tree.md - thanks Carl! If you are coming from RadSEQ/other next-gen methods, then you'll need to have python/phyluce installed... if you are coming from a UCE background you probably have it installed already!). Tweak the pathway to your convert_one_align_to_another.py file within the phyluce installation:
 
