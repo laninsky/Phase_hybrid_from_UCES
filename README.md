@@ -11,4 +11,4 @@ If you are coming from pyRAD, you can use the scripts in helper_scripts to get y
 
 You'll probably want to run the pipeline more than once: for each of your hybrids, and for a few non-hybrids to act as a comparison.
 
-![hybrid_identification_pipeline](https://cloud.githubusercontent.com/assets/8808649/8816841/906efdfa-2ff1-11e5-8287-e2ab2c541861.png)
+![hybrid_identification_pipeline](https://cloud.githubusercontent.com/assets/8808649/8860428/4e512bf6-3149-11e5-9ee4-7ea321904d3b.png)
