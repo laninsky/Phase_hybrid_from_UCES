@@ -26,6 +26,6 @@ sequencepaste <- paste(sequencepaste,intable[j,1],sep="")
 
 to_write[tablelength,1] <- sequencepaste
 
-write.table(to_write, "hybrid_ref2.fa",quote=FALSE, col.names=FALSE,row.names=FALSE)
+write.table(to_write, "temp_alt2.fa",quote=FALSE, col.names=FALSE,row.names=FALSE)
 
 q()
