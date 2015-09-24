@@ -20,5 +20,16 @@ If you could cite the pub, and the progam as below, that would be lovely:
 
 Alexander, A. 2015. Phase_hybrid_from_next_gen v1.0.0. Available from https://github.com/laninsky/Phase_hybrid_from_next_gen
 
+This pipeline also wouldn't be possible without the programs listed below. Please cite them as well:
+
+R: R Core Team. 2015. R: A language and environment for statistical computing. URL http://www.R-project.org/. R Foundation for Statistical Computing, Vienna, Austria. https://www.r-project.org/
+
+bwa: See citation info at: http://bio-bwa.sourceforge.net/bwa.shtml#13 and Li, H. "Toward better understanding of artifacts in variant calling from high-coverage samples." Bioinformatics (Oxford, England) 30, no. 20 (2014): 2843.
+
+picard: http://broadinstitute.github.io/picard/
+
+GATK: See citation info at https://www.broadinstitute.org/gatk/about/citing
+
 #Version history
+v1.0.1: minor updates to the readmes
 v1.0.0: ready to rock 'n' roll
