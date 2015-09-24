@@ -30,6 +30,8 @@ picard: http://broadinstitute.github.io/picard/
 
 GATK: See citation info at https://www.broadinstitute.org/gatk/about/citing
 
+RAxML: See citation info at http://sco.h-its.org/exelixis/web/software/raxml/
+
 #Version history
 v1.0.1: minor updates to the readmes
 v1.0.0: ready to rock 'n' roll
