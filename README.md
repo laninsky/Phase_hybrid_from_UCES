@@ -20,9 +20,15 @@ If you could cite the pub, and the progam as below, that would be lovely:
 
 Alexander, A. 2015. Phase_hybrid_from_next_gen v1.0.0. Available from https://github.com/laninsky/Phase_hybrid_from_next_gen
 
-This pipeline also wouldn't be possible without the programs listed below. Please cite them as well:
+This pipeline also wouldn't be possible without the programs/packages listed below. Please cite them as well:
 
 R: R Core Team. 2015. R: A language and environment for statistical computing. URL http://www.R-project.org/. R Foundation for Statistical Computing, Vienna, Austria. https://www.r-project.org/
+
+Stringr:  Hadley Wickham (2012). stringr: Make it easier to work with strings.. R package version 0.6.2. http://CRAN.R-project.org/package=stringr (for up-to-date citation information run citation("stringr" in R)
+  
+data.table: M Dowle, A Srinivasan, T Short, S Lianoglou with contributions from R Saporta and E Antonyan (2015). data.table: Extension of Data.frame. R package version 1.9.6. http://CRAN.R-project.org/package=data.table  (for up-to-date citation information run citation("data.table" in R)
+  
+plyr: Hadley Wickham (2011). The Split-Apply-Combine Strategy for Data Analysis. Journal of Statistical Software, 40(1), 1-29. URL  http://www.jstatsoft.org/v40/i01/.
 
 bwa: See citation info at: http://bio-bwa.sourceforge.net/bwa.shtml#13 and Li, H. "Toward better understanding of artifacts in variant calling from high-coverage samples." Bioinformatics (Oxford, England) 30, no. 20 (2014): 2843.
 
