@@ -19,3 +19,6 @@ done;
 ```
 
 Then you are ready to copy the other scripts you need for the phasing_step to this folder
+
+#Version history
+14-Oct-15: updated script because it wasn't handling samplenames correctly if they had an 's' in them.
