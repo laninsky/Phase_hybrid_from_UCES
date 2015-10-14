@@ -31,7 +31,7 @@ locus_count <- locus_count + 1
 tempfile <- NULL
 } else {
 tempy <- NULL
-tempy <- rbind(unlist(strsplit(intable[j,1],"[\\ ]+",fixed=FALSE))[1],unlist(strsplit(intable[j,1],"[\\ ]+",fixed=FALSE))[2])
+tempy <- rbind(unlist(strsplit(intable[j,1],"[[:blank:]]+",fixed=FALSE))[1],unlist(strsplit(intable[j,1],"[[:blank:]]+",fixed=FALSE))[2])
 tempfile <- rbind(tempfile,tempy)
 }
 }
