@@ -76,5 +76,7 @@ sumtable2 <- as.data.table(sumtable)[,c("V2","V3") := list(pmin(V2, V3), pmax(V2
 out <- ddply(sumtable2,.(V2,V3),nrow)
 
 write.table(out, "allele_combinations.txt",quote=FALSE, col.names=FALSE,row.names=FALSE)
+write.table(sumtable, "allele_combinations_by_locus.txt",quote=FALSE, col.names=FALSE,row.names=FALSE)
+
 q()
 
