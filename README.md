@@ -3,11 +3,9 @@ Have you got a hybrid in your next-gen dataset (currently developed for UCE and 
 
 There are two sets of scripts to help with this (their relative contribution is outlined in the image below):
 
-The first step is in the folder phasing_step. There is a readme in that folder to help with those.
+The first step is the phasing_step which can be followed at: https://github.com/laninsky/reference_aligning_to_established_loci/tree/master/phase_everyone . This will phase all of your samples so that we can determine the phylogenetic relationships by allele. Follow the instructions through Step 6 (MAFFT alignment).
 
-The second step is in the folder post-processing. There is also a readme in there to help you too!
-
-If you are coming from pyRAD, you can use the scripts in helper_scripts to get your fasta files together from the *.loci file.
+The second step is in the folder post-processing in this current repository. There is a readme in there to help you.
 
 ![hybrid_identification_pipeline](https://cloud.githubusercontent.com/assets/8808649/8860428/4e512bf6-3149-11e5-9ee4-7ea321904d3b.png)
 
@@ -39,7 +37,7 @@ GATK: See citation info at https://www.broadinstitute.org/gatk/about/citing
 RAxML: See citation info at http://sco.h-its.org/exelixis/web/software/raxml/
 
 #Version history
-v1.1.0: modified code to phase all samples and classify them by a priori species definitions and/or hybrid status. By default, pie graphs showing combinations of alleles now shown.
+v1.1.0: modified code to use phase all samples and classify them by a priori species definitions and/or hybrid status. By default, pie graphs showing combinations of alleles now shown.
 
 v1.0.2: hybrid_relationships.R now gives list of combinations of parental species for each individual locus ("allele_combinations_by_locus.txt"), as well as the original\ summary across loci ("allele_combinations.txt")
 
