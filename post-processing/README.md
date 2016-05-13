@@ -5,17 +5,20 @@ Now we have our phased alleles for all our samples in separate fasta files per l
 ```
 mkdir working_fasta
 cp combined_fasta/*.fasta working_fasta
-cd working_fasta
 ```
 
-2) Next, we need to convert our fasta alignments to phylip so we can run raxml. We'll use the phyluce wrappers for this (code quite liberarlly borrowed from Carl Oliveros - https://github.com/carloliveros/uce-scripts/blob/master/Species%20tree.md - thanks Carl! If you are coming from RadSEQ/other next-gen methods, then you'll need to have python/phyluce installed... if you are coming from a UCE background you probably have it installed already!). Tweak the pathway to your convert_one_align_to_another.py file within the phyluce installation:
-
+2) Next, we need to convert our fasta alignments to phylip so we can run raxml. We'll use the phyluce wrappers for this (code quite liberarlly borrowed from Carl Oliveros - https://github.com/carloliveros/uce-scripts/blob/master/Species%20tree.md - thanks Carl! If you are coming from RadSEQ/other next-gen methods, then you'll need to have python/phyluce installed... if you are coming from a UCE background you probably have it installed already!). Tweak the pathway to your convert_one_align_to_another.py file within the phyluce installation. If your sample names are longer than 10 characters you will need to pass the arguments from --shorten-names onwards. An example of the short.conf file can be found at https://github.com/laninsky/UCE_processing_steps#species-tree-stuff. Make sure you list each sample twice (once for each of its "allele names") e.g.
 ```
-cd ..
-python /public/uce/phyluce/bin/align/convert_one_align_to_another.py --alignments fasta --output phylip/ --input-format fasta --output-format phylip
+[taxa]
+kaloula_baleata_jam3573_1:ba_j3573_1
+kaloula_baleata_jam3573_2:ba_j3573_2
+```
+Run this code by:
+```
+python /public/uce/phyluce/bin/align/convert_one_align_to_another.py --alignments working_fasta --output phylip/ --input-format fasta --output-format phylip --shorten-names --name-conf  short.conf
 ```
 
-5a) We can then use the phyluce wrappers to run raxml for each of our loci IF WE HAVE A COMPLETE DATASET (i.e. no missing samples for any loci - if this is you, see step 5b). You'll want to select an appropriate outgroup e.g. k_bal_r, tweak the number of cores if 6 is too few/too many, and edit the pathway to phyluce_genetrees_run_raxml_genetrees.py. You also need raxml to be installed and in your path.
+5a) We can then use the phyluce wrappers to run raxml for each of our loci IF WE HAVE A COMPLETE DATASET (i.e. no missing samples for any loci - if this is you, see step 5b). You'll want to select an appropriate outgroup e.g. ba_j3573_1, tweak the number of cores if 6 is too few/too many, and edit the pathway to phyluce_genetrees_run_raxml_genetrees.py. You also need raxml to be installed and in your path.
 ```
 python /public/uce/phyluce/bin/genetrees/phyluce_genetrees_run_raxml_genetrees.py --input phylip --output phase_genetrees --outgroup change_this_to_your_outgroup_sp --cores 6 --quiet 2>&1 | tee log/raxml_genetrees.txt
 
@@ -32,25 +35,13 @@ wd=`pwd`
 cd phylip
 unset i
 
-for i in `ls ONE_*.phylip`;
+for i in `ls *.phylip`;
 do mkdir ../phase_genetrees/$i
 toraxml="raxmlHPC-SSE3 -m GTRGAMMA -n best -s $wd/phylip/$i -p $RANDOM -w $wd/phase_genetrees/$i --no-bfgs"
 $toraxml;
 done;
 ```
-To detach from this screen: Ctrl+A, Ctr+D. You'll then want to start another screen session (using 'screen' as above) and navigate to your working directory. Running these two screens allows us to run raxml simultaneously on two cores, but you can skip the screen and just run these sequentially if you would rather.
-
-```
-wd=`pwd`
-cd phylip
-unset i
-
-for i in `ls TWO_*.phylip`;
-do mkdir ../phase_genetrees/$i
-toraxml="raxmlHPC-SSE3 -m GTRGAMMA -n best -s $wd/phylip/$i -p $RANDOM -w $wd/phase_genetrees/$i --no-bfgs"
-$toraxml;
-done;
-```
+To detach from this screen: Ctrl+A, Ctr+D. 
 
 Note: if you get the error: ```: illegal option -- - ``` then you might need to modify the following line in the above code:
 ```toraxml="raxmlHPC-SSE3 -m GTRGAMMA -n best -s $wd/phylip/$i -p $RANDOM -w $wd/phase_genetrees/$i --no-bfgs"```
@@ -65,6 +56,7 @@ for i in `ls --color=never`; do if [ -d $i ]; then printname=`cat $i/RAxML_bestT
 ```
 
 
+#### UP TO HERE MODIFYING
 3) You might be in the situation where you have multiple hybrids/samples of uncertain taxonomic status in your dataset. These are going to muddle things up a little, because if putative hybrids you have phased map back to one of these 'uncertains', that doesn't give you a lot of information on the putative parental species of the hybrid you are interested in. So... at this point we can run remove_uncertains.R before we move on to the raxml stage. To do this, you'll need to set up the file 'species_assignments'. You might as well do this now, anyway, because you are going to need it later on. Also even if you aren't planning on removing any uncertains, run the script anyway, because it helps reformat the file after MAFFT wraps the lines in it, and removes any samples completely comprised of missing data. This file has the sample names (following "samplenames.txt" from https://github.com/laninsky/reference_aligning_to_established_loci) in the first column (tab delimited), and the species/taxon designations you'd like to use in the second column. Make sure to put 'hybrid' for your putative hybrid, and 'uncertain' for any samples you think should be removed from your dataset. Also make sure to remake this file if you are running this pipeline multiple different times for different putative hybrids (or non-hybrids to test as controls). Example of 'species_assignments':
 ```
 k_bal_r baleata
