@@ -64,4 +64,4 @@ Then invoke the script by:
 Rscript hybrid_relationships.R
 ```
 
-The program will spit out a summary of relationships across the alleles for all loci for each sample. All going well, there should now be a file in your working directory called "allele_combinations.txt". You can examine it and see what combinations of closest relatives for each allele were found for each sample at specific loci. "allele_combinations_sum.txt" has the same information but summarized for each sample. Relationships are not recorded for alleles which are sister to a clade of other alleles rather than to a single other allele.
+The program will spit out a summary of relationships across the alleles for all loci for each sample. All going well, there should now be a file in your working directory called "allele_combinations_by_locus.txt". You can examine it and see what combinations of closest relatives for each allele were found for each sample at specific loci. "allele_combinations.txt" but summarized across each species combination of alleles. Relationships are not recorded for alleles which are sister to a clade of other alleles rather than to a single other allele.
