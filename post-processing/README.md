@@ -65,4 +65,4 @@ Then invoke the script by:
 Rscript hybrid_relationships.R
 ```
 
-The program will spit out a summary of relationships across the alleles for all loci for each sample. All going well, there should now be a file in your working directory called "allele_combinations.txt". You can examine it and see what combinations of closest relatives for each allele were found for each sample at specific loci. "NSSS" is an abbreviation for "no single sister species" e.g. in this case the allele was sister to a clade containing multiple taxa. "allele_combinations_sum.txt" has the same information but summarized for each sample.
+The program will spit out a summary of relationships across the alleles for all loci for each sample. All going well, there should now be a file in your working directory called "allele_combinations.txt". You can examine it and see what combinations of closest relatives for each allele were found for each sample at specific loci. "allele_combinations_sum.txt" has the same information but summarized for each sample. Relationships are not recorded for alleles which are sister to a clade of other alleles rather than to a single other allele.
