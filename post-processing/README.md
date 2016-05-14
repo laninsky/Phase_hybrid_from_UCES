@@ -55,12 +55,10 @@ touch ubertree.tre
 for i in `ls --color=never`; do if [ -d $i ]; then printname=`cat $i/RAxML_bestTree.best`; echo $i $printname >> ubertree.tre; fi; done 
 ```
 
-7) Now we are going to use some R code (hybrid_relationships.R) to pull out the relationships of the alleles for each of our samples. This assumes you've already installed the library package stringr, data.table and plyr e.g. install.packages("stringr"). Upload hybrid_relationships.R to the folder with ubertree.tre (the 'phase_genetrees' folder), and make sure a copy of species_assignments is also in this folder (following the code below should copy species_assignments over).
+7) Now we are going to use some R code (hybrid_relationships.R) to pull out the relationships of the alleles for each of our samples. This assumes you've already installed the library package stringr, data.table and plyr e.g. install.packages("stringr"). Upload hybrid_relationships.R to the folder with ubertree.tre (the 'phase_genetrees' folder).
 
 ```
-cp ../fasta/species_assignments ../phase_genetrees
 Rscript hybrid_relationships.R
 ```
 
-The program will spit out a summary of relationships across your alleles for the loci. All going well, there should now be a file in your working directory called "allele_combinations.txt". You can examine it and see what combinations of closest relatives for each allele were found across the gene-trees. "NSSS" is an abbreviation for "no single sister species" e.g. in this case the hybrid allele was sister to a clade containing multiple taxa.
-
+The program will spit out a summary of relationships across the alleles for all loci for each sample. All going well, there should now be a file in your working directory called "allele_combinations.txt". You can examine it and see what combinations of closest relatives for each allele were found for each sample at specific loci. "NSSS" is an abbreviation for "no single sister species" e.g. in this case the allele was sister to a clade containing multiple taxa. "allele_combinations_sum.txt" has the same information but summarized for each sample.
