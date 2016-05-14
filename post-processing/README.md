@@ -55,7 +55,11 @@ touch ubertree.tre
 for i in `ls --color=never`; do if [ -d $i ]; then printname=`cat $i/RAxML_bestTree.best`; echo $i $printname >> ubertree.tre; fi; done 
 ```
 
-7) Now we are going to use some R code (hybrid_relationships.R) to pull out the relationships of the alleles for each of our samples. This assumes you've already installed the library package stringr, data.table and plyr e.g. install.packages("stringr"). Upload hybrid_relationships.R to the folder with ubertree.tre (the 'phase_genetrees' folder).
+7) Now we are going to use some R code (hybrid_relationships.R) to pull out the relationships of the alleles for each of our samples. This assumes you've already installed the library package stringr, data.table and plyr e.g. install.packages("stringr"). Upload hybrid_relationships.R to the folder with ubertree.tre (the 'phase_genetrees' folder). You'll also need a file which has the allele assignment suffix for allele 1 in the first row, and the assignment suffix for allele 2 in the second row e.g.
+```
+_1
+_2
+```
 
 ```
 Rscript hybrid_relationships.R
