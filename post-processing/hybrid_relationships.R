@@ -32,7 +32,7 @@ samples[1:(dim(sumtemptable)[1]),1] <- sumtemptable$V2
 samples[((dim(sumtemptable)[1])+1):(dim(samples)[1]),1] <- sumtemptable$V3
 samplenames <- unique(samples)
 
-temp1table <- matrix(NA,ncol=4,nrow=(dim(samplenames)[1]))
+temp1table <- matrix("NSSS",ncol=4,nrow=(dim(samplenames)[1]))
 temp1table[,1] <- temptemptable[1,1]
 temp1table[,2] <- samplenames
 
