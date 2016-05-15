@@ -63,7 +63,7 @@ write.table(out, "allele_combinations.txt",quote=FALSE, col.names=FALSE,row.name
 sumtable <- as.data.table(temptablebysample)[,c(3,4) := list(pmin(V3, V4), pmax(V3, V4))]
 sumtable$V3 <- substr(sumtable$V3,1, nchar(sumtable$V3)-suffixes)
 sumtable$V4 <- substr(sumtable$V4,1, nchar(sumtable$V4)-suffixes)
-out <- ddply(sumtable,.(V3,V4),nrow)
+out <- ddply(sumtable,.(V2,V3,V4),nrow)
 write.table(sumtable, "allele_combinations_per_locus.txt",quote=FALSE, col.names=FALSE,row.names=FALSE)
 write.table(out, "allele_combinations_per_locus_summary.txt",quote=FALSE, col.names=FALSE,row.names=FALSE)
 
