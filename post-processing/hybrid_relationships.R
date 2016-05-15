@@ -49,8 +49,6 @@ temp1table[l,4] <- temptemptable[m,2]
 temptablebysample <- rbind(temptablebysample,temp1table)
 }
 
-
-######## UP TO HERE RECODING ###########
 colnames(temptable) <- NULL
 rownames(temptable) <- NULL
 colnames(temptablebysample) <- NULL
@@ -63,8 +61,8 @@ out <- ddply(sumtable,.(V2,V3),nrow)
 write.table(out, "allele_combinations.txt",quote=FALSE, col.names=FALSE,row.names=FALSE)
 
 sumtable <- as.data.table(temptablebysample)[,c(3,4) := list(pmin(V3, V4), pmax(V3, V4))]
-sumtable$V2 <- substr(sumtable$V3,1, nchar(sumtable$V3)-suffixes)
-sumtable$V3 <- substr(sumtable$V4,1, nchar(sumtable$V4)-suffixes)
+sumtable$V3 <- substr(sumtable$V3,1, nchar(sumtable$V3)-suffixes)
+sumtable$V4 <- substr(sumtable$V4,1, nchar(sumtable$V4)-suffixes)
 out <- ddply(sumtable,.(V3,V4),nrow)
 write.table(sumtable, "allele_combinations_per_locus.txt",quote=FALSE, col.names=FALSE,row.names=FALSE)
 write.table(out, "allele_combinations_per_locus_summary.txt",quote=FALSE, col.names=FALSE,row.names=FALSE)
