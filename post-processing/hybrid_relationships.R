@@ -25,25 +25,28 @@ temptemptable <- rbind(temptemptable,temp4)
 for (i in 1:(dim(temptemptable)[1])) {
 if(substr(temptemptable[i,2],1,(nchar(temptemptable[i,2])-suffixes))==substr(temptemptable[i,3],1,(nchar(temptemptable[i,3])-suffixes))) {
 findpattern <- paste("\\(",temptemptable[i,2],":0.[0-9]+,",temptemptable[i,3],":0.[0-9]+\\)",sep="")
-replacepattern <- substr(temptemptable[i,2],1,(nchar(temptemptable[i,2])-suffixes))
-tempie <- gsub(findpattern,replacepattern,intable[j,2])
-temp <- unlist(strsplit(tempie,"\\("))
+replacepattern <- paste((substr(temptemptable[i,2],1,(nchar(temptemptable[i,2])-suffixes))),paste(rep("x",suffixes),collapse=""),sep="")
+intable[j,2] <- gsub(findpattern,replacepattern,intable[j,2])
+}
+}
+
+
+#########UP TO HERE WITH WORKING OUT HOW TO REPLACE VALUES AND CYCLE THROUGH THE FILE AGAIN FOR CLOSE SISTER RELATIONSHIPS
+
+
+
+temp <- unlist(strsplit(intable[j,2],"\\("))
 for (k in 1:(length(temp))) {
 temp1 <-  unlist(strsplit(temp[k],"\\)"))[1]
-coloncount <- nchar(temp1) - nchar(gsub(":","",temp1,fixed=TRUE))
 if (coloncount==2) {
 temp2 <- unlist(strsplit(temp1,":"))
 temp3 <- unlist(strsplit(temp2,","))
-if(temp3[1]==replacepattern) {
-temptemptable[i,4] <- temp3[3]
-}
-if(temp3[3]==replacepattern) {
-temptemptable[i,4] <- temp3[1]
-}
-}
-}
-}
-}
+
+
+
+
+
+
 
 colnames(temptemptable) <- NULL
 rownames(temptemptable) <- NULL
