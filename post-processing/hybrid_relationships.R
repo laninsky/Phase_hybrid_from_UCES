@@ -30,23 +30,35 @@ intable[j,2] <- gsub(findpattern,replacepattern,intable[j,2])
 }
 }
 
-
-#########UP TO HERE WITH WORKING OUT HOW TO REPLACE VALUES AND CYCLE THROUGH THE FILE AGAIN FOR CLOSE SISTER RELATIONSHIPS
-
-
-
 temp <- unlist(strsplit(intable[j,2],"\\("))
 for (k in 1:(length(temp))) {
 temp1 <-  unlist(strsplit(temp[k],"\\)"))[1]
+coloncount <- nchar(temp1) - nchar(gsub(":","",temp1,fixed=TRUE))
 if (coloncount==2) {
 temp2 <- unlist(strsplit(temp1,":"))
 temp3 <- unlist(strsplit(temp2,","))
-
-
-
-
-
-
+temp1lines <- which(grepl((substr(temp3[1],1,(nchar(temp3[1])-suffixes))),temptemptable[,2])==TRUE)
+temp3lines <- which(grepl((substr(temp3[3],1,(nchar(temp3[3])-suffixes))),temptemptable[,2])==TRUE)
+if(length(temp1lines)>0 && (substr(temptemptable[temp1lines,2],1,(nchar(temptemptable[temp1lines,2])-suffixes))==substr(temptemptable[temp1lines,3],1,(nchar(temptemptable[temp1lines,3])-suffixes)))) {
+temptemptable[temp1lines,4] <- temp3[3]
+}
+if(length(temp3lines)>0 && (substr(temptemptable[temp3lines,2],1,(nchar(temptemptable[temp3lines,2])-suffixes))==substr(temptemptable[temp3lines,3],1,(nchar(temptemptable[temp3lines,3])-suffixes)))) {
+temptemptable[temp3lines,4] <- temp3[1]
+}
+if(!(temp3[1] %in% temptemptable[,4])) {
+if(!((temp3[1] %in% temptemptable[,2]) || (temp3[1] %in% temptemptable[,3]))) {
+temp4 <- c(intable[j,1],temp3[1],temp3[3], NA)
+temptemptable <- rbind(temptemptable,temp4)
+}
+}
+if(!(temp3[3] %in% temptemptable[,4])) {
+if(!((temp3[3] %in% temptemptable[,2]) || (temp3[3] %in% temptemptable[,3]))) {
+temp4 <- c(intable[j,1],temp3[1],temp3[3], NA)
+temptemptable <- rbind(temptemptable,temp4)
+}
+}
+}
+}
 
 colnames(temptemptable) <- NULL
 rownames(temptemptable) <- NULL
@@ -76,11 +88,12 @@ temp1table[l,4] <- temptemptable[m,2]
 if (temp1table[l,2]==substr(temp1table[l,3],1,(nchar(temp1table[l,3])-suffixes)) && substr(temp1table[l,3],1,(nchar(temp1table[l,3])-suffixes))==substr(temp1table[l,4],1,(nchar(temp1table[l,4])-suffixes))) {
 temp1table[l,5] <- temptemptable[(which(sumtemptable$V2==temp1table[l,2])),4]
 }
-}
 
 temptablebysample <- rbind(temptablebysample,temp1table)
 temptable <- rbind(temptable,temptemptable)
 }
+}
+
 
 colnames(temptablebysample) <- NULL
 rownames(temptablebysample) <- NULL
