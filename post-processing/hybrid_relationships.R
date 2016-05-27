@@ -77,23 +77,27 @@ temp1table[,2] <- samplenames
 temp1table[,5] <- NA
 
 for (l in 1:(dim(temp1table)[1])) {
+x <- 1
 for (m in 1:(dim(temptemptable)[1])) {
+if (temp1table[l,2]==substr(temptemptable[m,3],1,(nchar(temptemptable[m,3])-suffixes)) && substr(temptemptable[m,2],1,(nchar(temptemptable[m,2])-suffixes))==substr(temptemptable[m,3],1,(nchar(temptemptable[m,3])-suffixes))) {
+temp1table[l,3:5] <- temptemptable[m,2:4]
+break
+} else {
 if(grepl(temp1table[l,2],temptemptable[m,2],fixed=TRUE)) {
-temp1table[l,3] <- temptemptable[m,3]
+temp1table[l,(x+2)] <- temptemptable[m,3]
+x <- x+1
 }
 if(grepl(temp1table[l,2],temptemptable[m,3],fixed=TRUE)) {
-temp1table[l,4] <- temptemptable[m,2]
+temp1table[l,(x+2)] <- temptemptable[m,2]
+x <- x+1
 }
 }
-if (temp1table[l,2]==substr(temp1table[l,3],1,(nchar(temp1table[l,3])-suffixes)) && substr(temp1table[l,3],1,(nchar(temp1table[l,3])-suffixes))==substr(temp1table[l,4],1,(nchar(temp1table[l,4])-suffixes))) {
-temp1table[l,5] <- temptemptable[(which(sumtemptable$V2==temp1table[l,2])),4]
+}
 }
 
 temptablebysample <- rbind(temptablebysample,temp1table)
 temptable <- rbind(temptable,temptemptable)
 }
-}
-
 
 colnames(temptablebysample) <- NULL
 rownames(temptablebysample) <- NULL
