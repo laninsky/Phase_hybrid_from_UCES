@@ -64,15 +64,35 @@ Then invoke the script by:
 Rscript hybrid_relationships.R
 ```
 
-The program will spit out a summary of relationships across the alleles for all loci for each sample. All going well, there should now be a file in your working directory called "allele_combinations_by_locus.txt". You can examine it and see what combinations of closest relatives for each allele were found for each sample at specific loci. "summmarized_allele_combinations.txt" contains similar information but has the different combination of alleles for each sample summarized across loci e.g.
+The program will spit out a summary of relationships across the alleles for all loci for each sample. All going well, there should now be a file in your working directory called "allele_combinations_by_locus.txt". You can examine it and see the combinations of closest relatives the alleles of each sample at specific loci.  Where a given sample has a sister species relationship between its alleles, the next closely related species is given under 'next_closest_allele'.  The script loops through and replaces these alleles with the sample code suffixed by "x"s. Any other samples which have one of their alleles in a sister species relationship with this clade of sample-specific alleles are shown as having a sister species relationship with samplenamexx. Relationships are not recorded for alleles which are sister to a clade of alleles from multiple samples (this is represented by "NSSS" or "NS" in the files). e.g.
 ```
+"locus"           "sample"    "allele1"     "allele2"     "next_closest_allele"
+"uce1003.phylip"  "cfb_acd1"  "cfb_acd1_2"  "cfb_acd1_1"  "bal_rmb2_1" 
+"uce1003.phylip"  "pul_dsm1"  "pul_dsm1_1"  "pul_dsm1_2"    NA
+...
+"uce998.phylip"   "con_cds5"  "con_rmb4xx"  "NSSS"          NA  
+"uce998.phylip"   "pic_rmb5"  "neg_gvagxx"  "NSSS"          NA
 
 ```
-Relationships are not recorded for alleles which are sister to a clade of other alleles rather than sister to a single allele/sample. Where a given sample had a sister species relationship between its alleles, the script loops through and replaces these alleles with the sample code suffixed by "x"s. The next most closely related species is presented in the final column of each file for these samples, and any other samples which have one of their alleles in a sister species relationship with this clade of alleles are shown as having a sister species relationship with samplenamexx e.g.
+"summmarized_allele_combinations.txt" contains similar information but has the different combination of alleles for each sample summarized across loci e.g.
 ```
+sample    sister_species1   sister_species2   next_closest_species  count
+bal_jam3    NS                bal_lsuh                <NA>            34
+bal_jam3    NS                bal_rmb2                <NA>            27
+bal_jam3    NS                cfb_acd1                <NA>            70
+bal_jam3    NS                cfc_rmb2                <NA>            1
+...
+war_rmb4    war_rmb4          war_rmb4                wal_rmb5        8
+war_rmb4    war_rmb4          war_rmb4                <NA>            90
 
 ```
-"raw_allele_combinations.txt" contains sister species relationships found at each locus, not summarized by sample e.g.
+ "raw_allele_combinations.txt" contains sister species relationships found at each locus, not summarized by sample e.g.
 ```
-
+"locus"           "allele1"      "allele2"      "next_closest_allele"
+"uce1003.phylip"  "cfb_acd1_2"   "cfb_acd1_1"   "bal_rmb2_1"         
+"uce1003.phylip"  "pul_dsm1_1"   "pul_dsm1_2"   NA                   
+"uce1003.phylip"  "med_dsm1_1"   "med_dsm1_2"   NA                   
+"uce1003.phylip"  "koc_rmb9_1"   "koc_rmb9_2"   "rea_rmb1_2" 
+...
+"uce998.phylip"   "con_cds5_1"  "con_rmb4xx"    NA
 ```
