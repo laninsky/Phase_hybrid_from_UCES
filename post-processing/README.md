@@ -64,4 +64,15 @@ Then invoke the script by:
 Rscript hybrid_relationships.R
 ```
 
-The program will spit out a summary of relationships across the alleles for all loci for each sample. All going well, there should now be a file in your working directory called "allele_combinations_by_locus.txt". You can examine it and see what combinations of closest relatives for each allele were found for each sample at specific loci. "summmarized_allele_combinations.txt" contains similar information but has the different combination of alleles for each sample summarized across loci. Relationships are not recorded for alleles which are sister to a clade of other alleles rather than sister to a single allele. Where a given sample had a sister species relationship between its alleles, the next most closely related species is also presented in the final column of each file. "raw_allele_combinations.txt" contains sister species relationships found at each locus, not summarized by sample. 
+The program will spit out a summary of relationships across the alleles for all loci for each sample. All going well, there should now be a file in your working directory called "allele_combinations_by_locus.txt". You can examine it and see what combinations of closest relatives for each allele were found for each sample at specific loci. "summmarized_allele_combinations.txt" contains similar information but has the different combination of alleles for each sample summarized across loci e.g.
+```
+
+```
+Relationships are not recorded for alleles which are sister to a clade of other alleles rather than sister to a single allele/sample. Where a given sample had a sister species relationship between its alleles, the script loops through and replaces these alleles with the sample code suffixed by "x"s. The next most closely related species is presented in the final column of each file for these samples, and any other samples which have one of their alleles in a sister species relationship with this clade of alleles are shown as having a sister species relationship with samplenamexx e.g.
+```
+
+```
+"raw_allele_combinations.txt" contains sister species relationships found at each locus, not summarized by sample e.g.
+```
+
+```
