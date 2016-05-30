@@ -1,53 +1,24 @@
 #Post-processing#
-Now we have our phased alleles for the hybrid tacked on to the fasta with the rest of our samples. In ONE_uce-xxx.fasta we have the first allele and the rest of our samples. In TWO_uce-xxx.fasta we have the second allele and the rest of our samples.
+Now we have our phased alleles for all our samples in separate fasta files per locus.
 
-1) The first step is to  re-align our hybrid alleles and the rest of the sequences, as indels were stripped out of the hybrid file so that gatk could eat the sequence for phasing. I am going to use MAFFT for this, but you could pick your favorite aligher:
+1) The first step is to copy all of these files to a new folder, just in case we stuff up at any of the downstream steps, so that we don't have to repeat all of the phasing steps
 ```
-for i in *.fasta; do mv $i temp; mafft temp > $i; done;
-rm temp
-```
-
-2) Now we are going to copy all of these files to a new folder, just in case we stuff up at any of the downstream steps, so that we don't have to repeat everything
-```
-mkdir fasta
-cp *.fasta fasta
-cd fasta
+mkdir working_fasta
+cp combined_fasta/*.fasta working_fasta
 ```
 
-3) You might be in the situation where you have multiple hybrids/samples of uncertain taxonomic status in your dataset. These are going to muddle things up a little, because if the hybrid you have phased maps back to one of these 'uncertains', that doesn't give you a lot of information on the putative parental species of the hybrid you are interested in. So... at this point we can run remove_uncertains.R before we move on to the raxml stage. To do this, you'll need to set up the file 'species_assignments'. You might as well do this now, anyway, because you are going to need it later on. Also even if you aren't planning on removing any uncertains, run the script anyway, because it helps reformat the file after MAFFT wraps the lines in it, and removes any samples completely comprised of missing data. This file has the sample names (make sure you include all the samples that are in your fasta files!) in the first column (tab delimited), and the species/taxon designations you'd like to use in the second column. Make sure to put 'hybrid' for your putative hybrid, and 'uncertain' for any samples you think should be removed from your dataset. Also make sure to remake this file if you are running this pipeline multiple different times for different putative hybrids (or non-hybrids to test as controls). Example of 'species_assignments':
+2) Next, we need to convert our fasta alignments to phylip so we can run raxml. We'll use the phyluce wrappers for this (code quite liberally borrowed from Carl Oliveros - https://github.com/carloliveros/uce-scripts/blob/master/Species%20tree.md - thanks Carl! If you are coming from RadSEQ/other next-gen methods, then you'll need to have python/phyluce installed... if you are coming from a UCE background you probably have it installed already!). Tweak the pathway to your convert_one_align_to_another.py file within the phyluce installation. If your sample names are longer than 10 characters you will need to pass the arguments from --shorten-names onwards. An example of the short.conf file can be found at https://github.com/laninsky/UCE_processing_steps#species-tree-stuff. Make sure you list each sample twice (once for each of its "allele names") e.g.
 ```
-k_bal_r baleata
-k_cfc_r uncertain
-k_war_r k_war_r
-k_con_r conjuncta
-k_wal_r uncertain
-k_pixme hybrid
-k_mer_r meridionalis
-k_koc_r kocakii
-k_bal_r baleata
+[taxa]
+kaloula_baleata_jam3573_1:ba_j3573_1
+kaloula_baleata_jam3573_2:ba_j3573_2
+```
+Run this code by:
+```
+python /public/uce/phyluce/bin/align/convert_one_align_to_another.py --alignments working_fasta --output phylip/ --input-format fasta --output-format phylip --shorten-names --name-conf  short.conf
 ```
 
-Upload species_assignments and remove_uncertains.R to the fasta directory which has your aligned fasta files in it (e.g. working_dir/fasta) and run it by:
-```
-unset i
-for i in `ls *.fasta`;
-do mv $i temp;
-Rscript remove_uncertains.R
-mv temp.fa $i;
-rm -rf temp;
-done;
-```
-
-This step can take a while (because it now has to process 2* the alignments), but if you use `ls -l` you can watch the progress as it ticks along.
-
-4) Next, we need to convert our fasta alignments to phylip so we can run raxml. We'll use the phyluce wrappers for this (code quite liberarlly borrowed from Carl Oliveros - https://github.com/carloliveros/uce-scripts/blob/master/Species%20tree.md - thanks Carl! If you are coming from RadSEQ/other next-gen methods, then you'll need to have python/phyluce installed... if you are coming from a UCE background you probably have it installed already!). Tweak the pathway to your convert_one_align_to_another.py file within the phyluce installation:
-
-```
-cd ..
-python /public/uce/phyluce/bin/align/convert_one_align_to_another.py --alignments fasta --output phylip/ --input-format fasta --output-format phylip
-```
-
-5a) We can then use the phyluce wrappers to run raxml for each of our loci IF WE HAVE A COMPLETE DATASET (i.e. no missing samples for any loci - if this is you, see step 5b). You'll want to select an appropriate outgroup e.g. k_bal_r, tweak the number of cores if 6 is too few/too many, and edit the pathway to phyluce_genetrees_run_raxml_genetrees.py. You also need raxml to be installed and in your path.
+5a) We can then use the phyluce wrappers to run raxml for each of our loci IF WE HAVE A COMPLETE DATASET (i.e. no missing samples for any loci - if this is you, see step 5b). You'll want to select an appropriate outgroup e.g. ba_j3573_1, tweak the number of cores if 6 is too few/too many, and edit the pathway to phyluce_genetrees_run_raxml_genetrees.py. You also need raxml to be installed and in your path.
 ```
 python /public/uce/phyluce/bin/genetrees/phyluce_genetrees_run_raxml_genetrees.py --input phylip --output phase_genetrees --outgroup change_this_to_your_outgroup_sp --cores 6 --quiet 2>&1 | tee log/raxml_genetrees.txt
 
@@ -64,25 +35,13 @@ wd=`pwd`
 cd phylip
 unset i
 
-for i in `ls ONE_*.phylip`;
+for i in `ls *.phylip`;
 do mkdir ../phase_genetrees/$i
 toraxml="raxmlHPC-SSE3 -m GTRGAMMA -n best -s $wd/phylip/$i -p $RANDOM -w $wd/phase_genetrees/$i --no-bfgs"
 $toraxml;
 done;
 ```
-To detach from this screen: Ctrl+A, Ctr+D. You'll then want to start another screen session (using 'screen' as above) and navigate to your working directory. Running these two screens allows us to run raxml simultaneously on two cores, but you can skip the screen and just run these sequentially if you would rather.
-
-```
-wd=`pwd`
-cd phylip
-unset i
-
-for i in `ls TWO_*.phylip`;
-do mkdir ../phase_genetrees/$i
-toraxml="raxmlHPC-SSE3 -m GTRGAMMA -n best -s $wd/phylip/$i -p $RANDOM -w $wd/phase_genetrees/$i --no-bfgs"
-$toraxml;
-done;
-```
+To detach from this screen: Ctrl+A, Ctr+D. 
 
 Note: if you get the error: ```: illegal option -- - ``` then you might need to modify the following line in the above code:
 ```toraxml="raxmlHPC-SSE3 -m GTRGAMMA -n best -s $wd/phylip/$i -p $RANDOM -w $wd/phase_genetrees/$i --no-bfgs"```
@@ -96,12 +55,44 @@ touch ubertree.tre
 for i in `ls --color=never`; do if [ -d $i ]; then printname=`cat $i/RAxML_bestTree.best`; echo $i $printname >> ubertree.tre; fi; done 
 ```
 
-7) Now we are going to use some R code (hybrid_relationships.R) to pull out the clades with just our hybrid in it. This assumes you've already installed the library package stringr, data.table and plyr e.g. install.packages("stringr"). Upload hybrid_relationships.R to the folder with ubertree.tre (the 'phase_genetrees' folder), and make sure a copy of species_assignments is also in this folder (following the code below should copy species_assignments over).
-
+7) Now we are going to use some R code (hybrid_relationships.R) to pull out the relationships of the alleles for each of our samples. This assumes you've already installed the library package stringr, data.table and plyr e.g. install.packages("stringr"). Upload hybrid_relationships.R to the folder with ubertree.tre (the 'phase_genetrees' folder). You'll also need a file in the same folder which has the length (in characters) of the allele assignment suffixes in a file calle "suffix.txt" e.g. for "_1" and "_2"
 ```
-cp ../fasta/species_assignments ../phase_genetrees
+2
+```
+Then invoke the script by:
+```
 Rscript hybrid_relationships.R
 ```
 
-The program will spit out a summary of relationships across your alleles for the loci. All going well, there should now be a file in your working directory called "allele_combinations.txt". You can examine it and see what combinations of closest relatives for each allele were found across the gene-trees. "NSSS" is an abbreviation for "no single sister species" e.g. in this case the hybrid allele was sister to a clade containing multiple taxa.
+The program will spit out a summary of relationships across the alleles for all loci for each sample. All going well, there should now be a file in your working directory called "allele_combinations_by_locus.txt". You can examine it and see the combinations of closest relatives the alleles of each sample at specific loci.  Where a given sample has a sister species relationship between its alleles, the next closely related species is given under 'next_closest_allele'.  The script loops through and replaces these alleles with the sample code suffixed by "x"s. Any other samples which have one of their alleles in a sister species relationship with this clade of sample-specific alleles are shown as having a sister species relationship with samplenamexx. Relationships are not recorded for alleles which are sister to a clade of alleles from multiple samples (this is represented by "NSSS" or "NS" in the files). e.g.
+```
+"locus"           "sample"    "allele1"     "allele2"     "next_closest_allele"
+"uce1003.phylip"  "cfb_acd1"  "cfb_acd1_2"  "cfb_acd1_1"  "bal_rmb2_1" 
+"uce1003.phylip"  "pul_dsm1"  "pul_dsm1_1"  "pul_dsm1_2"    NA
+...
+"uce998.phylip"   "con_cds5"  "con_rmb4xx"  "NSSS"          NA  
+"uce998.phylip"   "pic_rmb5"  "neg_gvagxx"  "NSSS"          NA
 
+```
+"summmarized_allele_combinations.txt" contains similar information but has the different combination of alleles for each sample summarized across loci e.g.
+```
+sample    sister_species1   sister_species2   next_closest_species  count
+bal_jam3    NS                bal_lsuh                <NA>            34
+bal_jam3    NS                bal_rmb2                <NA>            27
+bal_jam3    NS                cfb_acd1                <NA>            70
+bal_jam3    NS                cfc_rmb2                <NA>            1
+...
+war_rmb4    war_rmb4          war_rmb4                wal_rmb5        8
+war_rmb4    war_rmb4          war_rmb4                <NA>            90
+
+```
+ "raw_allele_combinations.txt" contains sister species relationships found at each locus, not summarized by sample e.g.
+```
+"locus"           "allele1"      "allele2"      "next_closest_allele"
+"uce1003.phylip"  "cfb_acd1_2"   "cfb_acd1_1"   "bal_rmb2_1"         
+"uce1003.phylip"  "pul_dsm1_1"   "pul_dsm1_2"   NA                   
+"uce1003.phylip"  "med_dsm1_1"   "med_dsm1_2"   NA                   
+"uce1003.phylip"  "koc_rmb9_1"   "koc_rmb9_2"   "rea_rmb1_2" 
+...
+"uce998.phylip"   "con_cds5_1"  "con_rmb4xx"    NA
+```
