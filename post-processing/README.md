@@ -49,18 +49,6 @@ Note: if you get the error: ```: illegal option -- - ``` then you might need to 
 ```toraxml="raxmlHPC-SSE3 -m GTRGAMMA -n best -s $wd/phylip/$i -p $RANDOM -w $wd/phase_genetrees/$i --no-bfgs"```
 to specify the number of threads that are needed by -T
 
-Loci which have sites where all taxa are missing will have a new phylip file written out by RAxML prefixed by 'reduced'. We now need to run the pipeline again to analyze these loci. From within the phylip folder (you should still be in there)
-
-```
-unset i
-
-for j in `ls *.phylip.reduced`;
-do i=`echo $j | sed 's/.reduced//g'`;
-rm -rf $wd/phase_genetrees/$i/*;
-toraxml="raxmlHPC-SSE3 -m GTRGAMMA -n best -s $wd/phylip/$j -p $RANDOM -w $wd/phase_genetrees/$i --no-bfgs";
-$toraxml;
-done;
-```
 
 6) We then need to navigate to the folder with all our genetrees in it. We create a file similar to 'all-best-trees.tre', except with UCE names tied to each tree:
 ```
