@@ -36,7 +36,9 @@ cd phylip
 unset i
 
 for i in `ls *.phylip`;
-do mkdir ../phase_genetrees/$i
+do echo $i > name;
+Rscript removing_missing.R;
+mkdir ../phase_genetrees/$i;
 toraxml="raxmlHPC-SSE3 -m GTRGAMMA -n best -s $wd/phylip/$i -p $RANDOM -w $wd/phase_genetrees/$i --no-bfgs"
 $toraxml;
 done;
@@ -47,7 +49,7 @@ Note: if you get the error: ```: illegal option -- - ``` then you might need to 
 ```toraxml="raxmlHPC-SSE3 -m GTRGAMMA -n best -s $wd/phylip/$i -p $RANDOM -w $wd/phase_genetrees/$i --no-bfgs"```
 to specify the number of threads that are needed by -T
 
-Loci which have missing taxa will have a new phylip file written out by RAxML prefixed by 'reduced'. We now need to run the pipeline again to analyze these loci. From within the phylip folder (you should still be in there)
+Loci which have sites where all taxa are missing will have a new phylip file written out by RAxML prefixed by 'reduced'. We now need to run the pipeline again to analyze these loci. From within the phylip folder (you should still be in there)
 
 ```
 unset i
