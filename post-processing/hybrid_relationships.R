@@ -37,8 +37,8 @@ coloncount <- nchar(temp1) - nchar(gsub(":","",temp1,fixed=TRUE))
 if (coloncount==2) {
 temp2 <- unlist(strsplit(temp1,":"))
 temp3 <- unlist(strsplit(temp2,","))
-temp1lines <- which(grepl((substr(temp3[1],1,(nchar(temp3[1])-suffixes))),temptemptable[,2])==TRUE)
-temp3lines <- which(grepl((substr(temp3[3],1,(nchar(temp3[3])-suffixes))),temptemptable[,2])==TRUE)
+temp1lines <- which((substr(temp3[1],1,(nchar(temp3[1])-suffixes)))==substr(temptemptable[,2],1,(nchar(temptemptable[,2])-suffixes)))
+temp3lines <- which((substr(temp3[3],1,(nchar(temp3[3])-suffixes)))==substr(temptemptable[,2],1,(nchar(temptemptable[,2])-suffixes)))
 if(length(temp1lines)>0 && (substr(temptemptable[temp1lines,2],1,(nchar(temptemptable[temp1lines,2])-suffixes))==substr(temptemptable[temp1lines,3],1,(nchar(temptemptable[temp1lines,3])-suffixes)))) {
 temptemptable[temp1lines,4] <- temp3[3]
 }
