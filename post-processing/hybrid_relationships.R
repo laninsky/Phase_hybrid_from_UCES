@@ -83,11 +83,11 @@ if (temp1table[l,2]==substr(temptemptable[m,3],1,(nchar(temptemptable[m,3])-suff
 temp1table[l,3:5] <- temptemptable[m,2:4]
 break
 } else {
-if(grepl(temp1table[l,2],temptemptable[m,2],fixed=TRUE)) {
+if(temp1table[l,2]==(substr(temptemptable[m,2],1,(nchar(temptemptable[m,2])-suffixes)))) {
 temp1table[l,(x+2)] <- temptemptable[m,3]
 x <- x+1
 }
-if(grepl(temp1table[l,2],temptemptable[m,3],fixed=TRUE)) {
+if(temp1table[l,2]==(substr(temptemptable[m,3],1,(nchar(temptemptable[m,3])-suffixes)))) {
 temp1table[l,(x+2)] <- temptemptable[m,2]
 x <- x+1
 }
