@@ -1,4 +1,4 @@
-# Phase_hybrid_from_next-gen_data v1.0.2
+# Phase_hybrid_from_next-gen_data v1.0.3
 Have you got a hybrid in your next-gen dataset (currently developed for UCE and RadSEQ loci), and you want to confirm its parent species? Then boy, do I have the pipeline for you! You can either manually copy the R and bash scripts to your local computer, or use git clone.
 
 There are two sets of scripts to help with this (their relative contribution is outlined in the image below):
@@ -37,7 +37,7 @@ GATK: See citation info at https://www.broadinstitute.org/gatk/about/citing
 RAxML: See citation info at http://sco.h-its.org/exelixis/web/software/raxml/
 
 #Version history
-v1.0.3: modified code to use phase all samples and classify them by a priori species definitions and/or hybrid status.
+v1.0.3: modified code to use phase all samples. Fixed a problem where sample names that were subsets of other names were being incorrectly grepped.
 
 v1.0.2: hybrid_relationships.R now gives list of combinations of parental species for each individual locus ("allele_combinations_by_locus.txt"), as well as the original\ summary across loci ("allele_combinations.txt")
 
