@@ -39,7 +39,7 @@ for i in `ls *.phylip`;
 do echo $i > name;
 Rscript removing_missing.R;
 mkdir ../phase_genetrees/$i;
-toraxml="raxmlHPC-SSE3 -m GTRGAMMA -n best -s $wd/phylip/$i -p $RANDOM -w $wd/phase_genetrees/$i --no-bfgs"
+toraxml="raxmlHPC-SSE3 -m GTRGAMMA -n best -s $wd/phylip/$i -p $RANDOM -w $wd/phase_genetrees/$i --no-bfgs";
 $toraxml;
 done;
 ```
