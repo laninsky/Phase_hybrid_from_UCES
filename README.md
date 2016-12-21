@@ -10,7 +10,9 @@ The second step is in the folder post-processing in this current repository. The
 ![hybrid_identification_pipeline](https://cloud.githubusercontent.com/assets/8808649/8860428/4e512bf6-3149-11e5-9ee4-7ea321904d3b.png)
 
 #Suggested citation
-This code was first published in: TBD
+This code was first published in:
+
+Alexander, A.M., Su, Y.C., Oliveros, C.H., Olson, K.V., Travers, S.L. and Brown, R.M., 2016. Genomic data reveals potential for hybridization, introgression, and incomplete lineage sorting to confound phylogenetic relationships in an adaptive radiation of narrow‐mouth frogs. Evolution.
 
 If you could cite the pub, and the progam as below, that would be lovely:
 
