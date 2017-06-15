@@ -9,7 +9,7 @@ The second step is in the folder post-processing in this current repository. The
 
 ![hybrid_identification_pipeline](https://cloud.githubusercontent.com/assets/8808649/8860428/4e512bf6-3149-11e5-9ee4-7ea321904d3b.png)
 
-#Suggested citation
+# Suggested citation
 This code was first published in:
 
 Alexander, A.M., Su, Y.C., Oliveros, C.H., Olson, K.V., Travers, S.L. and Brown, R.M., 2016. Genomic data reveals potential for hybridization, introgression, and incomplete lineage sorting to confound phylogenetic relationships in an adaptive radiation of narrow‐mouth frogs. Evolution.
@@ -38,7 +38,7 @@ GATK: See citation info at https://www.broadinstitute.org/gatk/about/citing
 
 RAxML: See citation info at http://sco.h-its.org/exelixis/web/software/raxml/
 
-#Version history
+# Version history
 v1.0.3: modified code to use phase all samples. Fixed a problem where sample names that were subsets of other names were being incorrectly grepped.
 
 v1.0.2: hybrid_relationships.R now gives list of combinations of parental species for each individual locus ("allele_combinations_by_locus.txt"), as well as the original\ summary across loci ("allele_combinations.txt")
