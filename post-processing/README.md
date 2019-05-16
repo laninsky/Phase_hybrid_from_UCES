@@ -1,4 +1,4 @@
-#Post-processing#
+# Post-processing
 Now we have our phased alleles for all our samples in separate fasta files per locus.
 
 1) The first step is to copy all of these files to a new folder, just in case we stuff up at any of the downstream steps, so that we don't have to repeat all of the phasing steps
