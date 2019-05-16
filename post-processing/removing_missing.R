@@ -7,6 +7,7 @@ output <- matrix(0,ncol=1,nrow=notaxa)
 for (i in 1:notaxa) {
 dnasequence <- unlist(strsplit(temp[i+1],"\\s+"))
 dnasequence <- paste(dnasequence[-1],temp[seq((2+i+notaxa),length(temp),(notaxa+1))],collapse="")
+dnasequence <- toupper(gsub("\\s+","",dnasequence))
 if ((grepl("A",dnasequence) | grepl("C",dnasequence) | grepl("G",dnasequence) | grepl("T",dnasequence))==TRUE) {
 output[i,1] <- 1
 }
